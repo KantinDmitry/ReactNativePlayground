@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import ExampleScreen2 from './components/ExampleScreen2.js';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <Text>Get started</Text>
+        <ExampleScreen2 />
       </View>
     );
   }

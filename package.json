@@ -1,5 +1,5 @@
 {
-  "name": "Video Alarm",
+  "name": "YoutubeAlarm",
   "version": "0.1.0",
   "devDependencies": {
     "react-native-scripts": "1.11.1",
