@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import LoginStatusMessage from './LoginStatusMessage';
 import AuthButton from './AuthButton';
+import PlayerButton from './PlayerButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +18,7 @@ const MainScreen = () => (
   <View style={styles.container}>
     <LoginStatusMessage />
     <AuthButton />
+    <PlayerButton />
   </View>
 );
 
