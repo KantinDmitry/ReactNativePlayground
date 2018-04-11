@@ -1,28 +1,3 @@
-// import React from 'react';
-// import { StyleSheet, Text, View } from 'react-native';
-// import ExampleScreen2 from './components/ExampleScreen2.js';
-//
-// export default class App extends React.Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>Get started</Text>
-//         <ExampleScreen2 />
-//       </View>
-//     );
-//   }
-// }
-//
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
-
 import React from 'react';
 import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
