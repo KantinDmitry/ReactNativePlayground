@@ -4,6 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
 
 import alarmsReducer from './alarms-reducer';
+import searchReducer from './search-reducer';
 
 // Start with two routes: The Main screen, with the Login screen on top.
 const firstAction = AppNavigator.router.getActionForPathAndParams('Main');
@@ -52,9 +53,10 @@ function auth(state = initialAuthState, action) {
 }
 
 const AppReducer = combineReducers({
-  nav,
-  auth,
-  alarmsData: alarmsReducer,
+    nav,
+    auth,
+    alarmsData: alarmsReducer,
+    searchData: searchReducer,
 });
 
 export default AppReducer;

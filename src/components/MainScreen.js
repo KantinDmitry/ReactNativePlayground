@@ -3,8 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import LoginStatusMessage from './LoginStatusMessage';
 import AuthButton from './AuthButton';
-import PlayerButton from './PlayerButton';
-import AlarmsButton from './AlarmsButton';
+import TransitionButton from './TransitionButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,8 +18,21 @@ const MainScreen = () => (
   <View style={styles.container}>
     <LoginStatusMessage />
     <AuthButton />
-    <PlayerButton />
-    <AlarmsButton />
+
+    <TransitionButton
+        screenName='Alarms'
+        title='Go to Alarms screen'
+    />
+
+    <TransitionButton
+        screenName='Player'
+        title='Go to Player screen'
+    />
+
+    <TransitionButton
+        screenName='Search'
+        title='Go to Search screen'
+    />
   </View>
 );
 
