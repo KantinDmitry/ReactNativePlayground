@@ -5,7 +5,7 @@ const initialState = {
 
 function searchReducer(state = initialState, action) {
     switch (action.type) {
-        case 'SUBMIT_SEARH':
+        case 'SUBMIT_SEARСH':
             return { ...state, text: action.payload };
         case 'RESET_SEARCH':
             return { ...state, ...initialState };

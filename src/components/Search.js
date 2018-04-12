@@ -53,7 +53,6 @@ class SearchScreen extends React.Component {
     }
 
     renderResultItem({ item, index }) {
-        console.log('renderResultItem', item);
         return (
             <View style={styles.searchResultContainer} key={index} >
                 <Image
@@ -70,7 +69,7 @@ class SearchScreen extends React.Component {
     }
 
     onQueryChange(query) {
-        console.log('Search query:', query);
+        console.log('Search -> onQueryChange:', query);
         this.props.submitSearch(query);
 
         var queryParams = {
@@ -110,7 +109,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    submitSearch: (query) => dispatch({ type: 'SUBMIT_SEARH', payload: query }),
+    submitSearch: (query) => dispatch({ type: 'SUBMIT_SEARСH', payload: query }),
     resetSearch: () => dispatch({ type: 'RESET_SEARCH' }),
     saveResults: (payload) => dispatch({ type: 'SAVE_RESULTS', payload }),
 });
