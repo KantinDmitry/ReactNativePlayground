@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     }
 });
 
-class AlarmsScreem extends React.Component {
+class AlarmsScreen extends React.Component {
 
     renderItem({ item, index }) {
         const alarmTime = new Date(item.time);
@@ -73,4 +73,4 @@ const mapDispatchToProps = dispatch => ({
     toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AlarmsScreem);
+export default connect(mapStateToProps, mapDispatchToProps)(AlarmsScreen);

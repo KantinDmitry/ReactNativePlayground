@@ -5,6 +5,7 @@ import LoginStatusMessage from './LoginStatusMessage';
 import AuthButton from './AuthButton';
 import PlayerButton from './PlayerButton';
 import AlarmsButton from './AlarmsButton';
+import TransitionButton from './TransitionButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +22,10 @@ const MainScreen = () => (
     <AuthButton />
     <PlayerButton />
     <AlarmsButton />
+    <TransitionButton
+        screenName='Search'
+        title='Go to Search screen'
+    />
   </View>
 );
 

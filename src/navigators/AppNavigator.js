@@ -8,6 +8,7 @@ import MainScreen from '../components/MainScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import Player from '../components/Player';
 import Alarms from '../components/Alarms';
+import Search from '../components/Search';
 import { addListener } from '../utils/redux';
 
 export const AppNavigator = StackNavigator({
@@ -16,6 +17,7 @@ export const AppNavigator = StackNavigator({
   Profile: { screen: ProfileScreen },
   Player: { screen: Player },
   Alarms: { screen: Alarms },
+  Search: { screen: Search },
 });
 
 class AppWithNavigationState extends React.Component {
