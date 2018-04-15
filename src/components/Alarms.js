@@ -1,6 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, StyleSheet, View, FlatList, Switch, Alert, TouchableHighlight } from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import {
+  Text,
+  StyleSheet,
+  View,
+  FlatList,
+  Switch,
+  Alert,
+  TouchableHighlight
+} from 'react-native';
 
 const styles = StyleSheet.create({
     alarmContainer: {
@@ -28,7 +37,10 @@ class AlarmsScreen extends React.Component {
         const timeHHMM = `${alarmTime.getHours()}:${alarmTime.getMinutes()}`;
 
         return (
-            <TouchableHighlight onLongPress={() => this.onLongPressAlarm(item)} underlayColor="white">
+            <TouchableHighlight
+              onLongPress={() => this.onLongPressAlarm(item)}
+              underlayColor="white"
+              onPress={() => this.onPressAlarm(item)} >
                 <View style={styles.alarmContainer} key={index} >
                     <Text>{timeHHMM}</Text>
                     <Switch
@@ -52,6 +64,10 @@ class AlarmsScreen extends React.Component {
         );
      }
 
+  onPressAlarm(alarm) {
+    this.props.goToConfigurationScreen(alarm);
+  }
+
   render() {
     return (
         <FlatList
@@ -69,8 +85,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    removeAlarm: (alarm) => dispatch({ type: 'REMOVE_ALARM', payload: alarm }),
-    toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
+  removeAlarm: (alarm) => dispatch({ type: 'REMOVE_ALARM', payload: alarm }),
+  toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
+  goToConfigurationScreen: (alarm) => {
+    const goToScreenAction = NavigationActions.navigate({
+      routeName: 'AlarmConfiguration',
+      params: { alarm },
+    });
+    dispatch(goToScreenAction);
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmsScreen);
