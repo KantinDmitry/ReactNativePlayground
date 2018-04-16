@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Switch } from 'react-native';
+import { StyleSheet, Text, View, Switch, TimePickerAndroid } from 'react-native';
 
 const styles = StyleSheet.create({
   root: {
@@ -24,16 +24,41 @@ const styles = StyleSheet.create({
 
 class AlarmConfiguration extends Component {
 
+  async openTimepicker(alarm, alarmTime) {
+    const hours = alarmTime.getHours();
+    const minutes = alarmTime.getMinutes();
+
+    try {
+      const {action, hour, minute} = await TimePickerAndroid.open({
+        hour: hours,
+        minute: minutes,
+        is24Hour: true,
+      });
+      if (action !== TimePickerAndroid.dismissedAction) {
+        this.props.changeAlarmTime(
+          alarm,
+          {
+            hours: hour,
+            minutes: minute,
+          }
+        );
+      }
+    } catch ({code, message}) {
+      console.warn('Cannot open time picker', message);
+    }
+  }
+
   render() {
     const { alarm } = this.props;
 
     const alarmTime = new Date(alarm.time);
-    const timeHHMM = `${alarmTime.getHours()}:${alarmTime.getMinutes()}`;
+    const doubleDigitsMinutes = (alarmTime.getMinutes() < 10 ? '0' : '') + alarmTime.getMinutes();
+    const timeHHMM = `${alarmTime.getHours()}:${doubleDigitsMinutes}`;
 
     return (
       <View style={styles.root}>
         <View style={styles.header}>
-          <Text style={styles.alarmTime}>{timeHHMM}</Text>
+          <Text onPress={() => this.openTimepicker(alarm, alarmTime)} style={styles.alarmTime}>{timeHHMM}</Text>
           <Switch
             value={alarm.isEnabled}
             onValueChange={() => this.props.toggleAlarm(alarm)}
@@ -53,6 +78,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
+  changeAlarmTime: (alarm, newTime) => dispatch({ type: 'CHANGE_ALARM_TIME', payload: { alarm, newTime } }),
 });
 
 AlarmConfiguration.propTypes = {

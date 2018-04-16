@@ -32,9 +32,8 @@ class AlarmsScreen extends React.Component {
 
     renderItem({ item, index }) {
         const alarmTime = new Date(item.time);
-        // FIXME: 13:0 -> 13:00
-        // TODO: extract formatter
-        const timeHHMM = `${alarmTime.getHours()}:${alarmTime.getMinutes()}`;
+        const doubleDigitsMinutes = (alarmTime.getMinutes() < 10 ? '0' : '') + alarmTime.getMinutes();
+        const timeHHMM = `${alarmTime.getHours()}:${doubleDigitsMinutes}`;
 
         return (
             <TouchableHighlight
