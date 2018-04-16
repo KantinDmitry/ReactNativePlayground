@@ -11,10 +11,12 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 const styles = StyleSheet.create({
     alarmContainer: {
         height: 50,
-        backgroundColor: '#CCCCCC',
+        backgroundColor: '#F5F5F5',
         borderBottomWidth: 2,
         borderEndColor: '#FFFFFF',
         borderStartColor: '#000000',
@@ -25,10 +27,30 @@ const styles = StyleSheet.create({
     alarmsList: {
         flex: 1,
         flexDirection: 'column'
-    }
+    },
+    daysList: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
+    activeWD: {
+      paddingLeft: 3,
+    },
+    inactiveWD: {
+      paddingLeft: 3,
+      color: '#CCCCCC'
+    },
 });
 
 class AlarmsScreen extends React.Component {
+
+  renderWeekDay({ item, index }, alarm) {
+    const style = alarm.repeat[index] === '1' ? styles.activeWD : styles.inactiveWD;
+
+    return (
+        <Text style={style} >{item}</Text>
+    );
+  }
 
     renderItem({ item, index }) {
         const alarmTime = new Date(item.time);
@@ -42,13 +64,22 @@ class AlarmsScreen extends React.Component {
               onPress={() => this.onPressAlarm(item)} >
                 <View style={styles.alarmContainer} key={index} >
                     <Text>{timeHHMM}</Text>
+                    {
+                      !!item.repeat && (
+                        <FlatList
+                          style={styles.daysList}
+                          data={weekDays}
+                          renderItem={(data) => this.renderWeekDay(data, item)}
+                          keyExtractor={(item, index) => 'weekDayItem' + index}
+                        />
+                      )
+                    }
                     <Switch
                         value={item.isEnabled}
                         onValueChange={() => this.props.toggleAlarm(item)}
                     />
                 </View>
             </TouchableHighlight>
-
         );
     }
 

@@ -2,32 +2,32 @@ const initialAuthState = {
     alarms: [
         {
             time: 31800000,
-            repeat: false,
+            repeat: '',
             isEnabled: false,
             id: 1523475409260,
         }, {
             time: 32000000,
-            repeat: false,
+            repeat: '1111100',
             isEnabled: true,
             id: 1523473409260,
         }, {
             time: 33000000,
-            repeat: false,
+            repeat: '0000011',
             isEnabled: true,
             id: 1524473409260,
         }, {
             time: 34000000,
-            repeat: false,
+            repeat: '0110010',
             isEnabled: false,
             id: 1525473409260,
         }, {
             time: 35000000,
-            repeat: false,
+            repeat: '',
             isEnabled: true,
             id: 1526473409260,
         }, {
             time: 36000000,
-            repeat: false,
+            repeat: '0110001',
             isEnabled: true,
             id: 1527473409260,
         }
