@@ -20,6 +20,11 @@ const MainScreen = () => (
     />
 
     <TransitionButton
+        screenName='Playlists'
+        title='Go to Playlists screen'
+    />
+
+    <TransitionButton
         screenName='Player'
         title='Go to Player screen'
     />

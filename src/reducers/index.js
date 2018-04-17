@@ -8,6 +8,7 @@ const AppReducer = combineReducers({
     nav: navigationReducer,
     alarmsData: alarmsReducer,
     searchData: searchReducer,
+    playlistsData: playlistsReducer,
 });
 
 export default AppReducer;
