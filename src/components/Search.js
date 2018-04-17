@@ -1,6 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, TextInput, StyleSheet, Image, FlatList, Text } from 'react-native';
+import {
+    View,
+    TextInput,
+    StyleSheet,
+    Image,
+    FlatList,
+    Text,
+    Button,
+    Picker,
+} from 'react-native';
+
 import { YOUTUBE_API_KEY } from '../secrets'
 
 const styles = StyleSheet.create({
@@ -21,7 +31,16 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         flex: 1,
         flexDirection: 'row',
-    }
+    },
+    videoNameText: {
+        width: '55%'
+    },
+    playlistPicker: {
+        height: 40,
+        width: '10%',
+        backgroundColor: '#333',
+        color: '#333',
+    },
 });
 
 class SearchScreen extends React.Component {
@@ -46,7 +65,7 @@ class SearchScreen extends React.Component {
                 <FlatList
                     style={styles.resultsList}
                     data={this.props.searchRresults}
-                    renderItem={this.renderResultItem}
+                    renderItem={this.renderResultItem.bind(this)}
                     keyExtractor={(item, index) => 'searchResultsListItem' + index}
                 />
             </View>
@@ -57,16 +76,34 @@ class SearchScreen extends React.Component {
         return (
             <View style={styles.searchResultContainer} key={index} >
                 <Image
-                    style={{ height: 50, width: 90, marginRight: 4 }}
+                    style={{ height: '100%', width: '30%', marginRight: 4 }}
                     source={{ uri: item.thumbnailURL }}
                 />
-                <Text>{item.title}</Text>
+                <View style={styles.videoNameText}>
+                    <Text>{item.title}</Text>
+                </View>
+                <Picker
+                    style={styles.playlistPicker}
+                    onValueChange={(playlistId) => this.addInPlaylist(playlistId, item)}>
+                    <Picker.Item label="Add in the playlist" value="" />
+                    {this.props.playlists.map(
+                        (playlist, index) => (<Picker.Item
+                            label={`${playlist.name}`}
+                            value={playlist.id}
+                            key={index}
+                        />)
+                    )}
+                </Picker>
             </View>
         );
     }
 
     componentWillMount() {
         this.props.resetSearch();
+    }
+
+    addInPlaylist(playlistId, videoInfo) {
+        playlistId && this.props.addVideoInPlaylist({ playlistId, videoInfo });
     }
 
     onQueryChange(query) {
@@ -107,12 +144,14 @@ function formatResult(result) {
 
 const mapStateToProps = state => ({
     searchRresults: state.searchData.results,
+    playlists: state.playlistsData.playlists,
 });
 
 const mapDispatchToProps = dispatch => ({
     submitSearch: (query) => dispatch({ type: 'SUBMIT_SEARСH', payload: query }),
     resetSearch: () => dispatch({ type: 'RESET_SEARCH' }),
     saveResults: (payload) => dispatch({ type: 'SAVE_RESULTS', payload }),
+    addVideoInPlaylist: (payload) => dispatch({ type: 'ADD_VIDEO_IN_PLAYLIST', payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen);
