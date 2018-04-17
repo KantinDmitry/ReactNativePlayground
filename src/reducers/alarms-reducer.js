@@ -15,6 +15,36 @@ function alarmsReducer(state = initialAuthState, action) {
     case 'EDIT_ALARM':
       // TODO: implement
       return { ...state };
+    case 'CHANGE_ALARM_TIME': {
+      const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
+      const alarm = state.alarms[alarmIndex];
+
+      const updatedAlarm = { ...alarm, time: action.payload.newTime };
+      const alarms = state.alarms.slice();
+      alarms[alarmIndex] = updatedAlarm;
+
+      return { ...state, alarms };
+    }
+    case 'TOGGLE_REPEAT_DAY': {
+      const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
+      const alarm = state.alarms[alarmIndex];
+
+      const updatedAlarm = { ...alarm, repeat: action.payload.newRepeat };
+      const alarms = state.alarms.slice();
+      alarms[alarmIndex] = updatedAlarm;
+
+      return { ...state, alarms };
+    }
+    case 'TOGGLE_ALARM_REPEAT': {
+      const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
+      const alarm = state.alarms[alarmIndex];
+
+      const updatedAlarm = { ...alarm, repeat: action.payload.newRepeat };
+      const alarms = state.alarms.slice();
+      alarms[alarmIndex] = updatedAlarm;
+
+      return { ...state, alarms };
+    }
     case 'TOGGLE_ALARM': {
       const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.id);
       const alarm = state.alarms[alarmIndex];
