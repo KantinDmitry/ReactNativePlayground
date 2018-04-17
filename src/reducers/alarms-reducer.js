@@ -5,7 +5,6 @@ const initialAuthState = {
 function alarmsReducer(state = initialAuthState, action) {
   switch (action.type) {
     case 'INIT_ALARMS':
-        console.log('itined with', action);
       return { ...state, alarms: action.payload };
     case 'ADD_ALARM':
       return { ...state, alarms: state.alarms.concat(action.payload) };
