@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Text, StyleSheet, View, FlatList, Switch, Alert, TouchableHighlight } from 'react-native';
+import { getAlarms, deleteAlarm, updateAlarmSwitching } from '../utils/database';
 
 const styles = StyleSheet.create({
     alarmContainer: {
@@ -52,16 +53,20 @@ class AlarmsScreen extends React.Component {
         );
      }
 
-  render() {
-    return (
-        <FlatList
-            style={styles.alarmsList}
-            data={this.props.alarms}
-            renderItem={this.renderItem.bind(this)}
-            keyExtractor={(item, index) => 'alarmListItem' + index}
-        />
-    );
-  }
+    render() {
+        return (
+            <FlatList
+                style={styles.alarmsList}
+                data={this.props.alarms}
+                renderItem={this.renderItem.bind(this)}
+                keyExtractor={(item, index) => 'alarmListItem' + index}
+            />
+        );
+    }
+
+    componentWillMount() {
+        getAlarms().then(this.props.initAlarms);
+    }
 }
 
 const mapStateToProps = state => ({
@@ -69,8 +74,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    removeAlarm: (alarm) => dispatch({ type: 'REMOVE_ALARM', payload: alarm }),
-    toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
+    removeAlarm: (alarm) => {
+        dispatch({ type: 'REMOVE_ALARM', payload: alarm });
+        deleteAlarm(alarm);
+    },
+    toggleAlarm: (alarm) => {
+        dispatch({ type: 'TOGGLE_ALARM', payload: alarm });
+        updateAlarmSwitching({ id: alarm.id, isEnabled: !alarm.isEnabled });
+    },
+    initAlarms: (alarms) => dispatch({ type: 'INIT_ALARMS', payload: alarms }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmsScreen);

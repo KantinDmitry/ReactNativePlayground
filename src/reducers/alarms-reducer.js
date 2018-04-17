@@ -1,41 +1,12 @@
 const initialAuthState = {
-    alarms: [
-        {
-            time: 31800000,
-            repeat: false,
-            isEnabled: false,
-            id: 1523475409260,
-        }, {
-            time: 32000000,
-            repeat: false,
-            isEnabled: true,
-            id: 1523473409260,
-        }, {
-            time: 33000000,
-            repeat: false,
-            isEnabled: true,
-            id: 1524473409260,
-        }, {
-            time: 34000000,
-            repeat: false,
-            isEnabled: false,
-            id: 1525473409260,
-        }, {
-            time: 35000000,
-            repeat: false,
-            isEnabled: true,
-            id: 1526473409260,
-        }, {
-            time: 36000000,
-            repeat: false,
-            isEnabled: true,
-            id: 1527473409260,
-        }
-    ]
+    alarms: []
 };
 
 function alarmsReducer(state = initialAuthState, action) {
   switch (action.type) {
+    case 'INIT_ALARMS':
+        console.log('itined with', action);
+      return { ...state, alarms: action.payload };
     case 'ADD_ALARM':
       return { ...state, alarms: state.alarms.concat(action.payload) };
     case 'REMOVE_ALARM': {
