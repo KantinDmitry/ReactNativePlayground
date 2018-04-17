@@ -11,6 +11,9 @@ import {
   TouchableHighlight
 } from 'react-native';
 import { getAlarms, deleteAlarm, updateAlarmSwitching } from '../utils/database';
+import {
+  toggleAlarm,
+} from '../actions/alarm';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -125,10 +128,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: 'REMOVE_ALARM', payload: alarm });
     deleteAlarm(alarm);
   },
-  toggleAlarm: (alarm) => {
-    dispatch({ type: 'TOGGLE_ALARM', payload: alarm });
-    updateAlarmSwitching({ id: alarm.id, isEnabled: !alarm.isEnabled });
-  },
+  toggleAlarm: (alarm) => dispatch(toggleAlarm(alarm)),
   goToConfigurationScreen: (alarm) => {
     const goToScreenAction = NavigationActions.navigate({
       routeName: 'AlarmConfiguration',

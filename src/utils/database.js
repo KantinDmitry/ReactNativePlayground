@@ -12,7 +12,7 @@ db.transaction((tx) => {
         `create table if not exists alarms(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             time INTEGER,
-            repeat INTEGER,
+            repeat TEXT,
             isEnabled INTEGER
         );`
     );
@@ -29,14 +29,14 @@ function makeDBCall(sql = '', args = []) {
 function createAlarm({ time, isEnabled, repeat }) {
     makeDBCall(
         'insert into alarms (time, repeat, isEnabled) values (?, ?, ?);',
-        [time, +repeat, +isEnabled]
+        [time, repeat, +isEnabled]
     );
 }
 
 function updateAlarmRepeat({ id, repeat }) {
     return makeDBCall(
         'update alarms set repeat = ? where id = ?;',
-        [+repeat, id]
+        [repeat, id]
     );
 }
 
@@ -45,6 +45,13 @@ function updateAlarmSwitching({ id, isEnabled }) {
         'update alarms set isEnabled = ? where id = ?;',
         [+isEnabled, id]
     );
+}
+
+function updateAlarmTime({ id, time }) {
+  return makeDBCall(
+    'update alarms set time = ? where id = ?;',
+    [+time, id]
+  );
 }
 
 function deleteAlarm({ id }) {
@@ -61,7 +68,7 @@ function getAlarms() {
                 {},
                 alarm,
                 {
-                    repeat: !!alarm.repeat,
+                    repeat: alarm.repeat,
                     isEnabled: !!alarm.isEnabled,
                 }
             ));
@@ -72,6 +79,7 @@ export {
     createAlarm,
     updateAlarmRepeat,
     updateAlarmSwitching,
+    updateAlarmTime,
     deleteAlarm,
     getAlarms,
 };

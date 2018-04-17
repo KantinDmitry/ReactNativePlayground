@@ -8,8 +8,14 @@ import {
   Switch,
   TimePickerAndroid,
   FlatList,
- } from 'react-native';
- import CheckBox from 'react-native-check-box'
+} from 'react-native';
+import CheckBox from 'react-native-check-box';
+import {
+  toggleAlarm,
+  changeAlarmTime,
+  toggleRepeat,
+  toggleRepeatDay,
+} from '../actions/alarm';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -143,20 +149,11 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
-  changeAlarmTime: (alarm, newTime) => dispatch({
-    type: 'CHANGE_ALARM_TIME',
-    payload: { alarm, newTime }
-  }),
-  toggleRepeatDay: (alarm, dayIndex) => dispatch({
-    type: 'TOGGLE_REPEAT_DAY',
-    payload: { alarm, dayIndex },
-  }),
-  toggleRepeat: (alarm) => dispatch({
-    type: 'TOGGLE_ALARM_REPEAT',
-    payload: { alarm },
-  }),
+const mapDispatchToProps = (dispatch) => ({
+  toggleAlarm: (alarm) => dispatch(toggleAlarm(alarm)),
+  changeAlarmTime: (alarm, newTime) => dispatch(changeAlarmTime(alarm, newTime)),
+  toggleRepeat: (alarm) => dispatch(toggleRepeat(alarm)),
+  toggleRepeatDay: (alarm, dayIndex) => dispatch(toggleRepeatDay(alarm, dayIndex)),
 });
 
 AlarmConfiguration.propTypes = {

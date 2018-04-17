@@ -19,11 +19,7 @@ function alarmsReducer(state = initialAuthState, action) {
       const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
       const alarm = state.alarms[alarmIndex];
 
-      const newTime = new Date(0);
-      newTime.setHours(action.payload.newTime.hours);
-      newTime.setMinutes(action.payload.newTime.minutes);
-
-      const updatedAlarm = { ...alarm, time: newTime.getTime()};
+      const updatedAlarm = { ...alarm, time: action.payload.newTime };
       const alarms = state.alarms.slice();
       alarms[alarmIndex] = updatedAlarm;
 
@@ -33,18 +29,7 @@ function alarmsReducer(state = initialAuthState, action) {
       const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
       const alarm = state.alarms[alarmIndex];
 
-      const newRepeat = alarm.repeat ? alarm.repeat : '0000000';
-      newRepeat = newRepeat.split('');
-      if (newRepeat[action.payload.dayIndex] === '0') {
-        newRepeat[action.payload.dayIndex] = '1';
-      }  else {
-        newRepeat[action.payload.dayIndex] = '0';
-        if (newRepeat.join('') === '0000000') {
-          newRepeat = [''];
-        }
-      }
-
-      const updatedAlarm = { ...alarm, repeat: newRepeat.join('') };
+      const updatedAlarm = { ...alarm, repeat: action.payload.newRepeat };
       const alarms = state.alarms.slice();
       alarms[alarmIndex] = updatedAlarm;
 
@@ -53,7 +38,8 @@ function alarmsReducer(state = initialAuthState, action) {
     case 'TOGGLE_ALARM_REPEAT': {
       const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
       const alarm = state.alarms[alarmIndex];
-      const updatedAlarm = { ...alarm, repeat: alarm.repeat ? '' : '1000000'};
+
+      const updatedAlarm = { ...alarm, repeat: action.payload.newRepeat };
       const alarms = state.alarms.slice();
       alarms[alarmIndex] = updatedAlarm;
 

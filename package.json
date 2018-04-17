@@ -23,6 +23,7 @@
     "react-native": "0.52.0",
     "react-native-check-box": "^2.1.0",
     "react-navigation": "^1.5.8",
-    "react-navigation-redux-helpers": "^1.0.3"
+    "react-navigation-redux-helpers": "^1.0.3",
+    "redux-thunk": "^2.2.0"
   }
 }
