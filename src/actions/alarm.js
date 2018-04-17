@@ -12,7 +12,7 @@ const createNewAlarm = () => {
     const alarm = {
       time: -10800000,
       repeat: '',
-      enabled: true,
+      isEnabled: true,
     };
 
     createAlarm(alarm).then((result) => {
