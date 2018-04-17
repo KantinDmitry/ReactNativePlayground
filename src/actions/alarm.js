@@ -1,4 +1,30 @@
-import { updateAlarmSwitching, updateAlarmRepeat, updateAlarmTime } from '../utils/database';
+import { NavigationActions } from 'react-navigation';
+
+import {
+  updateAlarmSwitching,
+  updateAlarmRepeat,
+  updateAlarmTime,
+  createAlarm,
+} from '../utils/database';
+
+const createNewAlarm = () => {
+  return (dispatch) => {
+    const alarm = {
+      time: -10800000,
+      repeat: '',
+      isEnabled: true,
+    };
+
+    createAlarm(alarm).then((result) => {
+      const alarmWithId = { ...alarm, id: result.insertId };
+      dispatch({
+        type: 'ADD_ALARM',
+        payload: alarmWithId,
+      });
+      dispatch(goToConfigurationScreen(alarmWithId));
+    });
+  };
+};
 
 const toggleAlarm = (alarm) => {
   return (dispatch) => {
@@ -12,7 +38,8 @@ const changeAlarmTime = (alarm, newTimeObj) => {
     let newTime = new Date(0);
     newTime.setHours(newTimeObj.hours);
     newTime.setMinutes(newTimeObj.minutes);
-    newTime = newTime.getTime()
+    newTime = newTime.getTime();
+    console.log(newTime);
 
     dispatch({ type: 'CHANGE_ALARM_TIME', payload: { alarm, newTime } });
     updateAlarmTime({ id: alarm.id, time: newTime });
@@ -47,4 +74,22 @@ const toggleRepeatDay = (alarm, dayIndex) => {
   };
 };
 
-export { toggleAlarm, changeAlarmTime, toggleRepeat, toggleRepeatDay };
+const goToConfigurationScreen = (alarm) => {
+  return (dispatch) => {
+    const goToScreenAction = NavigationActions.navigate({
+      routeName: 'AlarmConfiguration',
+      params: { alarm },
+    });
+
+    dispatch(goToScreenAction);
+  };
+}
+
+export {
+  createNewAlarm,
+  toggleAlarm,
+  changeAlarmTime,
+  toggleRepeat,
+  toggleRepeatDay,
+  goToConfigurationScreen,
+};
