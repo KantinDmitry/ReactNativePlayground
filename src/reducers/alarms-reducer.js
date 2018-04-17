@@ -59,6 +59,36 @@ function alarmsReducer(state = initialAuthState, action) {
 
       return { ...state, alarms };
     }
+    case 'TOGGLE_REPEAT_DAY': {
+      const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
+      const alarm = state.alarms[alarmIndex];
+
+      const newRepeat = alarm.repeat ? alarm.repeat : '0000000';
+      newRepeat = newRepeat.split('');
+      if (newRepeat[action.payload.dayIndex] === '0') {
+        newRepeat[action.payload.dayIndex] = '1';
+      }  else {
+        newRepeat[action.payload.dayIndex] = '0';
+        if (newRepeat.join('') === '0000000') {
+          newRepeat = [''];
+        }
+      }
+
+      const updatedAlarm = { ...alarm, repeat: newRepeat.join('') };
+      const alarms = state.alarms.slice();
+      alarms[alarmIndex] = updatedAlarm;
+
+      return { ...state, alarms };
+    }
+    case 'TOGGLE_ALARM_REPEAT': {
+      const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.alarm.id);
+      const alarm = state.alarms[alarmIndex];
+      const updatedAlarm = { ...alarm, repeat: alarm.repeat ? '' : '1000000'};
+      const alarms = state.alarms.slice();
+      alarms[alarmIndex] = updatedAlarm;
+
+      return { ...state, alarms };
+    }
     case 'TOGGLE_ALARM': {
       const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.id);
       const alarm = state.alarms[alarmIndex];

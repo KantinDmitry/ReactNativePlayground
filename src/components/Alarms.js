@@ -11,7 +11,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const styles = StyleSheet.create({
     alarmContainer: {
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
 
 class AlarmsScreen extends React.Component {
 
-  renderWeekDay({ item, index }, alarm) {
+  renderWeekDay(weekDay, index, alarm) {
     const style = alarm.repeat[index] === '1' ? styles.activeWD : styles.inactiveWD;
 
     return (
-        <Text style={style} >{item}</Text>
+      <Text style={style} key={index}>{weekDay}</Text>
     );
   }
 
@@ -56,7 +56,6 @@ class AlarmsScreen extends React.Component {
         const alarmTime = new Date(item.time);
         const doubleDigitsMinutes = (alarmTime.getMinutes() < 10 ? '0' : '') + alarmTime.getMinutes();
         const timeHHMM = `${alarmTime.getHours()}:${doubleDigitsMinutes}`;
-
         return (
             <TouchableHighlight
               onLongPress={() => this.onLongPressAlarm(item)}
@@ -66,12 +65,13 @@ class AlarmsScreen extends React.Component {
                     <Text>{timeHHMM}</Text>
                     {
                       !!item.repeat && (
-                        <FlatList
-                          style={styles.daysList}
-                          data={weekDays}
-                          renderItem={(data) => this.renderWeekDay(data, item)}
-                          keyExtractor={(item, index) => 'weekDayItem' + index}
-                        />
+                        <View style={styles.daysList}>
+                        {
+                          WEEK_DAYS.map((weekDay, index) => {
+                            return this.renderWeekDay(weekDay, index, item);
+                          })
+                        }
+                        </View>
                       )
                     }
                     <Switch

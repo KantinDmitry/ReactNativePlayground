@@ -1,25 +1,59 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, Switch, TimePickerAndroid } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Switch,
+  TimePickerAndroid,
+  FlatList,
+ } from 'react-native';
+ import CheckBox from 'react-native-check-box'
+
+const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const styles = StyleSheet.create({
   root: {
-    height: 200,
+    flex: 1,
     backgroundColor: '#F5FCFF',
   },
   header: {
-    flex: 1,
+    height: 70,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingLeft: 27,
+    paddingRight: 27,
     paddingBottom: 5,
     borderBottomWidth: 1,
     backgroundColor: '#FFFFFF',
   },
   alarmTime: {
     fontSize: 26,
-  }
+  },
+  repeatList: {
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
+  activeWD: {
+    paddingBottom: 4,
+    borderBottomWidth: 3,
+    borderBottomColor: '#000000',
+    textAlign: 'center',
+  },
+  inactiveWD: {
+    paddingBottom: 4,
+    borderBottomWidth: 3,
+    borderBottomColor: '#00000000',
+    color: '#CCCCCC',
+    textAlign: 'center',
+  },
 });
 
 class AlarmConfiguration extends Component {
@@ -48,6 +82,22 @@ class AlarmConfiguration extends Component {
     }
   }
 
+  renderWeekDay(weekDay, index, alarm) {
+    const style = alarm.repeat[index] === '1' ? styles.activeWD : styles.inactiveWD;
+
+    return (
+      <Text
+        onPress={() => this.props.toggleRepeatDay(alarm, index)}
+        style={style}
+        key={index}
+      >
+      {
+        weekDay.toUpperCase()
+      }
+      </Text>
+    );
+  }
+
   render() {
     const { alarm } = this.props;
 
@@ -64,6 +114,23 @@ class AlarmConfiguration extends Component {
             onValueChange={() => this.props.toggleAlarm(alarm)}
           />
         </View>
+        <CheckBox
+          style={{flex: 0, padding: 10, width: 130, paddingLeft: 30}}
+          onClick={() => this.props.toggleRepeat(alarm)}
+          isChecked={!!alarm.repeat}
+          leftText={"Repeat"}
+        />
+        {
+          !!alarm.repeat && (
+            <View style={styles.repeatList}>
+            {
+              WEEK_DAYS.map((weekDay, index) => {
+                return this.renderWeekDay(weekDay, index, alarm);
+              })
+            }
+            </View>
+          )
+        }
       </View>
     );
   }
@@ -78,7 +145,18 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
-  changeAlarmTime: (alarm, newTime) => dispatch({ type: 'CHANGE_ALARM_TIME', payload: { alarm, newTime } }),
+  changeAlarmTime: (alarm, newTime) => dispatch({
+    type: 'CHANGE_ALARM_TIME',
+    payload: { alarm, newTime }
+  }),
+  toggleRepeatDay: (alarm, dayIndex) => dispatch({
+    type: 'TOGGLE_REPEAT_DAY',
+    payload: { alarm, dayIndex },
+  }),
+  toggleRepeat: (alarm) => dispatch({
+    type: 'TOGGLE_ALARM_REPEAT',
+    payload: { alarm },
+  }),
 });
 
 AlarmConfiguration.propTypes = {
