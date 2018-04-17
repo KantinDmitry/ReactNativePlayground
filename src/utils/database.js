@@ -27,7 +27,7 @@ function makeDBCall(sql = '', args = []) {
 }
 
 function createAlarm({ time, isEnabled, repeat }) {
-    makeDBCall(
+    return makeDBCall(
         'insert into alarms (time, repeat, isEnabled) values (?, ?, ?);',
         [time, repeat, +isEnabled]
     );
@@ -103,6 +103,39 @@ export {
         time: 34000000,
         repeat: '0110010',
         isEnabled: false,
+    }, {
+        time: 35000000,
+        repeat: '',
+        isEnabled: true,
+    }, {
+        time: 36000000,
+        repeat: '0110001',
+        isEnabled: true,
+    },
+    {
+      time: 31800000,
+      repeat: '',
+      isEnabled: false,
+    }, {
+        time: 32000000,
+        repeat: '1111100',
+        isEnabled: true,
+    }, {
+        time: 33000000,
+        repeat: '0000011',
+        isEnabled: true,
+    }, {
+        time: 34000000,
+        repeat: '0110010',
+        isEnabled: false,
+    }, {
+        time: 35000000,
+        repeat: '',
+        isEnabled: true,
+    }, {
+        time: 36000000,
+        repeat: '0110001',
+        isEnabled: true,
     }, {
         time: 35000000,
         repeat: '',

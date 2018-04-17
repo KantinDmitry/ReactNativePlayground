@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import {
   Text,
   StyleSheet,
@@ -8,16 +7,22 @@ import {
   FlatList,
   Switch,
   Alert,
-  TouchableHighlight
+  TouchableHighlight,
+  Button,
 } from 'react-native';
-import { getAlarms, deleteAlarm, updateAlarmSwitching } from '../utils/database';
+import { getAlarms, deleteAlarm } from '../utils/database';
 import {
   toggleAlarm,
+  createNewAlarm,
+  goToConfigurationScreen,
 } from '../actions/alarm';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const styles = StyleSheet.create({
+    root: {
+      flex: 1,
+    },
     alarmContainer: {
         height: 50,
         backgroundColor: '#F5F5F5',
@@ -30,7 +35,6 @@ const styles = StyleSheet.create({
     },
     alarmsList: {
         flex: 1,
-        flexDirection: 'column'
     },
     daysList: {
       flex: 1,
@@ -43,6 +47,19 @@ const styles = StyleSheet.create({
     inactiveWD: {
       paddingLeft: 3,
       color: '#CCCCCC'
+    },
+    addButton: {
+      flex: 0,
+      position: 'absolute',
+      justifyContent: 'center',
+      alignItems: 'center',
+      bottom: 10,
+      right: 30,
+      height: 90,
+      height: 70,
+      width: 70,
+      borderRadius: 35,
+      backgroundColor: '#009DD9',
     },
 });
 
@@ -108,12 +125,24 @@ class AlarmsScreen extends React.Component {
 
   render() {
     return (
+      <View style={styles.root}>
         <FlatList
             style={styles.alarmsList}
             data={this.props.alarms}
             renderItem={this.renderItem.bind(this)}
             keyExtractor={(item, index) => 'alarmListItem' + index}
+            contentContainerStyle={{paddingBottom: 100}}
         />
+        <TouchableHighlight
+          style={styles.addButton}
+          onPress={() => this.props.createNewAlarm()}
+          underlayColor="#007099"
+        >
+          <View>
+            <Text style={{color: '#FFFFFF', fontSize: 40, marginTop: -5}}>+</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
     );
   }
 }
@@ -129,13 +158,8 @@ const mapDispatchToProps = dispatch => ({
     deleteAlarm(alarm);
   },
   toggleAlarm: (alarm) => dispatch(toggleAlarm(alarm)),
-  goToConfigurationScreen: (alarm) => {
-    const goToScreenAction = NavigationActions.navigate({
-      routeName: 'AlarmConfiguration',
-      params: { alarm },
-    });
-    dispatch(goToScreenAction);
-  },
+  createNewAlarm: () => dispatch(createNewAlarm()),
+  goToConfigurationScreen: (alarm) => dispatch(goToConfigurationScreen(alarm)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmsScreen);
