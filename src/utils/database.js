@@ -8,12 +8,22 @@ const db = SQLite.openDatabase('db.db');
 
 db.transaction((tx) => {
     tx.executeSql('drop table if exists alarms');
+    tx.executeSql('drop table if exists playlists');
+
     tx.executeSql(
         `create table if not exists alarms(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             time INTEGER,
             repeat TEXT,
             isEnabled INTEGER
+        );`
+    );
+
+    tx.executeSql(
+        `create table if not exists playlists(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            videos TEXT
         );`
     );
 });
@@ -74,6 +84,44 @@ function getAlarms() {
             ));
         });
 }
+
+function createPlaylist({ name, videos }) {
+    const stringifiedVideos = JSON.stringify(videos);
+
+    return makeDBCall(
+        'insert into playlists (name, videos) values (?, ?);',
+        [name, videos]
+    );
+}
+
+function deletePlaylist({ playlistId }) {
+    return makeDBCall(
+        'delete from playlists where id = ?;',
+        [playlistId]
+    );
+}
+
+function deleteVideoFromPlaylist({ playlist, videoId }) {
+    const updatedVideos = playlist.videos.filter(video => video.id === videoId);
+    const stringifiedVideos = JSON.stringify(updatedVideos);
+
+    return makeDBCall(
+        'update playlists set videos = ? where id = ?;',
+        [updatedVideos, playlist.id]
+    );
+}
+
+function addVideoToPlaylist({ playlist, videoInfo }) {
+    const updatedVideos = playlist.videos.concat(videoInfo);
+    const stringifiedVideos = JSON.stringify(updatedVideos);
+
+    return makeDBCall(
+        'update playlists set videos = ? where id = ?;',
+        [updatedVideos, playlist.id]
+    );
+}
+
+
 
 export {
     createAlarm,
