@@ -10,6 +10,7 @@ import {
   Alert,
   TouchableHighlight
 } from 'react-native';
+import { getAlarms, deleteAlarm, updateAlarmSwitching } from '../utils/database';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -98,6 +99,10 @@ class AlarmsScreen extends React.Component {
     this.props.goToConfigurationScreen(alarm);
   }
 
+  componentWillMount() {
+    getAlarms().then(this.props.initAlarms);
+  }
+
   render() {
     return (
         <FlatList
@@ -115,8 +120,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  removeAlarm: (alarm) => dispatch({ type: 'REMOVE_ALARM', payload: alarm }),
-  toggleAlarm: (alarm) => dispatch({ type: 'TOGGLE_ALARM', payload: alarm }),
+  initAlarms: (alarms) => dispatch({ type: 'INIT_ALARMS', payload: alarms }),
+  removeAlarm: (alarm) => {
+    dispatch({ type: 'REMOVE_ALARM', payload: alarm });
+    deleteAlarm(alarm);
+  },
+  toggleAlarm: (alarm) => {
+    dispatch({ type: 'TOGGLE_ALARM', payload: alarm });
+    updateAlarmSwitching({ id: alarm.id, isEnabled: !alarm.isEnabled });
+  },
   goToConfigurationScreen: (alarm) => {
     const goToScreenAction = NavigationActions.navigate({
       routeName: 'AlarmConfiguration',
