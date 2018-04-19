@@ -10,7 +10,7 @@ import {
   TouchableHighlight,
   Button,
 } from 'react-native';
-import { getAlarms, deleteAlarm } from '../utils/database';
+// import { getAlarms, deleteAlarm } from '../utils/database';
 import {
   toggleAlarm,
   createNewAlarm,
@@ -119,7 +119,7 @@ class AlarmsScreen extends React.Component {
   }
 
   componentWillMount() {
-    getAlarms().then(this.props.initAlarms);
+    // getAlarms().then(this.props.initAlarms);
   }
 
   render() {
@@ -154,7 +154,7 @@ const mapDispatchToProps = dispatch => ({
   initAlarms: (alarms) => dispatch({ type: 'INIT_ALARMS', payload: alarms }),
   removeAlarm: (alarm) => {
     dispatch({ type: 'REMOVE_ALARM', payload: alarm });
-    deleteAlarm(alarm);
+    // deleteAlarm(alarm);
   },
   toggleAlarm: (alarm) => dispatch(toggleAlarm(alarm)),
   createNewAlarm: () => dispatch(createNewAlarm()),

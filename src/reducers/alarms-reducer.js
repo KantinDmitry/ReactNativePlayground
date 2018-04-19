@@ -1,8 +1,81 @@
-const initialAuthState = {
-    alarms: []
+const initialState = {
+  alarms: [
+    {
+      id: 31800000,
+      time: 31800000,
+      repeat: '',
+      isEnabled: false,
+    }, {
+      id: 32000000,
+      time: 32000000,
+      repeat: '1111100',
+      isEnabled: true,
+    }, {
+      id: 33000000,
+      time: 33000000,
+      repeat: '0000011',
+      isEnabled: true,
+    }, {
+      id: 34000000,
+      time: 34000000,
+      repeat: '0110010',
+      isEnabled: false,
+    }, {
+      id: 35000000,
+      time: 35000000,
+      repeat: '',
+      isEnabled: true,
+    }, {
+      id: 36000000,
+      time: 36000000,
+      repeat: '0110001',
+      isEnabled: true,
+    },
+    {
+      id: 31800000,
+      time: 31800000,
+      repeat: '',
+      isEnabled: false,
+    }, {
+      id: 32000000,
+      time: 32000000,
+      repeat: '1111100',
+      isEnabled: true,
+    }, {
+      id: 33000000,
+      time: 33000000,
+      repeat: '0000011',
+      isEnabled: true,
+    }, {
+      id: 34000000,
+      time: 34000000,
+      repeat: '0110010',
+      isEnabled: false,
+    }, {
+      id: 35000000,
+      time: 35000000,
+      repeat: '',
+      isEnabled: true,
+    }, {
+      id: 36000000,
+      time: 36000000,
+      repeat: '0110001',
+      isEnabled: true,
+    }, {
+      id: 35000000,
+      time: 35000000,
+      repeat: '',
+      isEnabled: true,
+    }, {
+      id: 36000000,
+      time: 36000000,
+      repeat: '0110001',
+      isEnabled: true,
+    }
+  ]
 };
 
-function alarmsReducer(state = initialAuthState, action) {
+function alarmsReducer(state = initialState, action) {
   switch (action.type) {
     case 'INIT_ALARMS':
       return { ...state, alarms: action.payload };
@@ -48,7 +121,7 @@ function alarmsReducer(state = initialAuthState, action) {
     case 'TOGGLE_ALARM': {
       const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.id);
       const alarm = state.alarms[alarmIndex];
-      const updatedAlarm = { ...alarm, isEnabled: !alarm.isEnabled};
+      const updatedAlarm = { ...alarm, isEnabled: !alarm.isEnabled };
       const alarms = state.alarms.slice();
       alarms[alarmIndex] = updatedAlarm;
 
