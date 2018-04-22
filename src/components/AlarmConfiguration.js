@@ -16,6 +16,7 @@ import {
   toggleRepeat,
   toggleRepeatDay,
 } from '../actions/alarm';
+import { msToHHMM } from '../helpers/date-time';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -105,11 +106,7 @@ class AlarmConfiguration extends Component {
   }
 
   render() {
-    const { alarm } = this.props;
-
-    const alarmTime = new Date(alarm.time);
-    const doubleDigitsMinutes = (alarmTime.getMinutes() < 10 ? '0' : '') + alarmTime.getMinutes();
-    const timeHHMM = `${alarmTime.getHours()}:${doubleDigitsMinutes}`;
+    const timeHHMM = msToHHMM(this.props.alarm.time);
 
     return (
       <View style={styles.root}>

@@ -16,6 +16,7 @@ import {
   createNewAlarm,
   goToConfigurationScreen,
 } from '../actions/alarm';
+import { msToHHMM } from '../helpers/date-time';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -73,9 +74,8 @@ class AlarmsScreen extends React.Component {
   }
 
     renderItem({ item, index }) {
-        const alarmTime = new Date(item.time);
-        const doubleDigitsMinutes = (alarmTime.getMinutes() < 10 ? '0' : '') + alarmTime.getMinutes();
-        const timeHHMM = `${alarmTime.getHours()}:${doubleDigitsMinutes}`;
+        const timeHHMM = msToHHMM(item.time);
+
         return (
             <TouchableHighlight
               onLongPress={() => this.onLongPressAlarm(item)}
