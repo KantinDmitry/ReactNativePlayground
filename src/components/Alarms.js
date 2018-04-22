@@ -16,9 +16,8 @@ import {
   createNewAlarm,
   goToConfigurationScreen,
 } from '../actions/alarm';
-import { msToHHMM } from '../helpers/date-time';
-
-const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+import { msToHHMM } from '../shared/helpers/date-time';
+import { WEEK_DAYS } from '../shared/constants';
 
 const styles = StyleSheet.create({
     root: {
