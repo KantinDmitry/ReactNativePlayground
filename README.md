@@ -4,4 +4,4 @@ Can you imagine a waking up with a good meme video instead of a boring alarm sou
 
 No?
 
-But we can!
+We've got you covered, fam!
