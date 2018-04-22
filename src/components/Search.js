@@ -11,6 +11,7 @@ import {
     Picker,
 } from 'react-native';
 
+import { addVideoToPlaylist } from '../actions/playlists';
 import { YOUTUBE_API_KEY } from '../secrets'
 
 const styles = StyleSheet.create({
@@ -103,7 +104,7 @@ class SearchScreen extends React.Component {
     }
 
     addInPlaylist(playlistId, videoInfo) {
-        playlistId && this.props.addVideoInPlaylist({ playlistId, videoInfo });
+        playlistId && this.props.addVideoToPlaylist({ playlistId, videoInfo });
     }
 
     onQueryChange(query) {
@@ -151,7 +152,9 @@ const mapDispatchToProps = dispatch => ({
     submitSearch: (query) => dispatch({ type: 'SUBMIT_SEARСH', payload: query }),
     resetSearch: () => dispatch({ type: 'RESET_SEARCH' }),
     saveResults: (payload) => dispatch({ type: 'SAVE_RESULTS', payload }),
-    addVideoInPlaylist: (payload) => dispatch({ type: 'ADD_VIDEO_IN_PLAYLIST', payload }),
+    addVideoToPlaylist: (payload) => {
+        dispatch(addVideoToPlaylist(payload));
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen);

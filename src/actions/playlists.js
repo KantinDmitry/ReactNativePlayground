@@ -1,50 +1,59 @@
-import { updateAlarmSwitching, updateAlarmRepeat, updateAlarmTime } from '../utils/database';
+import {
+    createPlaylist,
+    deletePlaylist as deletePlaylistFromDB,
+    addVideoToPlaylist as addVideoToPlaylistInDB,
+    deleteVideoFromPlaylist as deleteVideoFromPlaylistInDB,
+} from '../utils/database';
 
-const toggleAlarm = (alarm) => {
+const createNewPlaylist = (name, videos = []) => {
   return (dispatch) => {
-    dispatch({ type: 'TOGGLE_ALARM', payload: alarm });
-    updateAlarmSwitching({ id: alarm.id, isEnabled: !alarm.isEnabled });
+    createPlaylist({ name }).then((result) => {
+      const playlistWithId = { name, id: result.insertId, videos };
+
+      dispatch({
+        type: 'ADD_PLAYLIST',
+        payload: playlistWithId,
+      });
+    });
   };
 };
 
-const changeAlarmTime = (alarm, newTimeObj) => {
+const deletePlaylist = (id) => {
   return (dispatch) => {
-    let newTime = new Date(0);
-    newTime.setHours(newTimeObj.hours);
-    newTime.setMinutes(newTimeObj.minutes);
-    newTime = newTime.getTime()
-
-    dispatch({ type: 'CHANGE_ALARM_TIME', payload: { alarm, newTime } });
-    updateAlarmTime({ id: alarm.id, time: newTime });
+    deletePlaylistFromDB({ id }).then(() => {
+      dispatch({
+        type: 'DELETE_PLAYLIST',
+        payload: { id },
+      });
+    });
   };
 };
 
-const toggleRepeat = (alarm) => {
+const addVideoToPlaylist = ({ playlistId, videoInfo }) => {
   return (dispatch) => {
-    const newRepeat = alarm.repeat ? '' : '1000000';
-
-    dispatch({ type: 'TOGGLE_ALARM_REPEAT', payload: { alarm, newRepeat } });
-    updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
+    addVideoToPlaylistInDB({ playlistId, videoInfo }).then(() => {
+      dispatch({
+        type: 'ADD_VIDEO_IN_PLAYLIST',
+        payload: { playlistId, videoInfo },
+      });
+    });
   };
 };
 
-const toggleRepeatDay = (alarm, dayIndex) => {
+const deleteVideoFromPlaylist = ({ playlistId, videoId }) => {
+    // TODO: implement
   return (dispatch) => {
-    let newRepeat = alarm.repeat ? alarm.repeat : '0000000';
-    newRepeat = newRepeat.split('');
-    if (newRepeat[dayIndex] === '0') {
-      newRepeat[dayIndex] = '1';
-    } else {
-      newRepeat[dayIndex] = '0';
-      if (newRepeat.join('') === '0000000') {
-        newRepeat = [''];
-      }
-    }
-    newRepeat = newRepeat.join('');
-
-    dispatch({ type: 'TOGGLE_REPEAT_DAY', payload: { alarm, newRepeat } });
-    updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
+    deleteVideoFromPlaylistInDB({ playlistId, videoId }).then(() => {
+      dispatch({
+        type: 'ADD_VIDEO_IN_PLAYLIST',
+        payload: { playlistId, videoId },
+      });
+    });
   };
 };
 
-export { toggleAlarm, changeAlarmTime, toggleRepeat, toggleRepeatDay };
+export {
+    createNewPlaylist,
+    deletePlaylist,
+    addVideoToPlaylist,
+ };

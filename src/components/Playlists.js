@@ -12,9 +12,9 @@ import {
     TextInput,
     Button,
 } from 'react-native';
-
+import { createNewPlaylist, deletePlaylist } from '../actions/playlists';
+import { getPlaylists } from '../utils/database';
 import AddButton from './AddButton';
-// import { getAlarms, deleteAlarm, updateAlarmSwitching } from '../utils/database';
 
 const styles = StyleSheet.create({
     playlistContainer: {
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     },
     playlistHead: {
         height: 35,
-        width: '100%',
         flex: 0,
         backgroundColor: '#BBBBBB',
         flexDirection: 'row',
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
     },
     videosList: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     root: {
         flex: 1,
@@ -54,8 +53,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 4,
         borderColor: 'rgba(0, 0, 0, 0.1)',
-        width: '70%',
-        height: '50%',
+        width: 300,
+        height: 300,
     },
 });
 
@@ -103,7 +102,7 @@ class PlaylistsScreen extends React.Component {
             'Delete playlist',
             'Are you sure?',
             [
-                {text: 'Yes', onPress: () => this.props.deletePlaylist(item)},
+                {text: 'Yes', onPress: () => this.props.deletePlaylist(item.id)},
                 {text: 'Cancel', style: 'cancel'},
             ],
         );
@@ -172,21 +171,24 @@ class PlaylistsScreen extends React.Component {
     }
 
     componentWillMount() {
-
+        if (!this.props.isInitialised) {
+            getPlaylists().then(this.props.initPlaylists);
+        }
     }
 }
 
 const mapStateToProps = state => ({
     playlists: state.playlistsData.playlists,
+    isInitialised: state.playlistsData.isInitialised,
 });
 
 const mapDispatchToProps = dispatch => ({
-    deletePlaylist: (playlist) => {
-        dispatch({ type: 'DELETE_PLAYLIST', payload: playlist });
+    deletePlaylist: (id) => {
+        dispatch(deletePlaylist(id));
     },
     initPlaylists: (playlists) => dispatch({ type: 'INIT_PLAYLISTS', payload: playlists }),
     createNewPlaylist: (name) => {
-        dispatch({ type: 'ADD_PLAYLIST', payload: { id: 1337, name} })
+        dispatch(createNewPlaylist(name));
     }
 });
 
