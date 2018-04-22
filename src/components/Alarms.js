@@ -18,6 +18,7 @@ import {
 } from '../actions/alarm';
 import { msToHHMM } from '../shared/helpers/date-time';
 import { WEEK_DAYS } from '../shared/constants';
+import AddButton from './AddButton';
 
 const styles = StyleSheet.create({
     root: {
@@ -47,18 +48,6 @@ const styles = StyleSheet.create({
     inactiveWD: {
       paddingLeft: 3,
       color: '#CCCCCC'
-    },
-    addButton: {
-      flex: 0,
-      position: 'absolute',
-      justifyContent: 'center',
-      alignItems: 'center',
-      bottom: 10,
-      right: 30,
-      height: 70,
-      width: 70,
-      borderRadius: 35,
-      backgroundColor: '#009DD9',
     },
 });
 
@@ -131,15 +120,9 @@ class AlarmsScreen extends React.Component {
             keyExtractor={(item, index) => 'alarmListItem' + index}
             contentContainerStyle={{paddingBottom: 100}}
         />
-        <TouchableHighlight
-          style={styles.addButton}
-          onPress={() => this.props.createNewAlarm()}
-          underlayColor="#007099"
-        >
-          <View>
-            <Text style={{color: '#FFFFFF', fontSize: 40, marginTop: -5}}>+</Text>
-          </View>
-        </TouchableHighlight>
+        <AddButton
+            onPress={() => this.props.createNewAlarm()}
+        />
       </View>
     );
   }
