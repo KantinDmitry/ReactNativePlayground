@@ -77,6 +77,7 @@ const toggleRepeat = (alarm) => {
 
     if (alarm.isEnabled) {
       if (newRepeat) {
+        clearAlarm(alarm.id, alarm.repeat); // clear old repeat
         setAlarm(alarm.id, newRepeat, alarm.time);
       } else {
         clearAlarm(alarm.id, alarm.repeat); // clear old repeat
