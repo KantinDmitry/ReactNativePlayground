@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -34,7 +33,5 @@ class ReduxExampleApp extends React.Component {
     );
   }
 }
-
-AppRegistry.registerComponent('ReduxExample', () => ReduxExampleApp);
 
 export default ReduxExampleApp;
