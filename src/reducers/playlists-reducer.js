@@ -89,8 +89,10 @@ function playlistsReducer(state = initialAuthState, action) {
     switch (action.type) {
     case 'INIT_PLAYLISTS':
         return { ...state, playlists: action.payload };
-    case 'ADD_PLAYLIST':
-        return { ...state, playlists: state.playlists.concat(action.payload) };
+    case 'ADD_PLAYLIST': {
+        const newPlaylist = { ...action.payload, videos: [] };
+        return { ...state, playlists: state.playlists.concat(newPlaylist) };
+    }
     case 'DELETE_PLAYLIST': {
         const deleteId = action.payload.id;
         return { ...state, playlists: state.playlists.filter(playlists => playlists.id !== deleteId) };
