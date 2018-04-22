@@ -1,11 +1,11 @@
 import { NavigationActions } from 'react-navigation';
 
-// import {
-//   updateAlarmSwitching,
-//   updateAlarmRepeat,
-//   updateAlarmTime,
-//   createAlarm,
-// } from '../utils/database';
+import {
+  updateAlarmSwitching,
+  updateAlarmRepeat,
+  updateAlarmTime,
+  createAlarm,
+} from '../utils/database';
 
 const createNewAlarm = () => {
   return (dispatch) => {
@@ -16,26 +16,21 @@ const createNewAlarm = () => {
       isEnabled: true,
     };
 
-    // createAlarm(alarm).then((result) => {
-    //   const alarmWithId = { ...alarm, id: result.insertId };
-    //   dispatch({
-    //     type: 'ADD_ALARM',
-    //     payload: alarmWithId,
-    //   });
-    //   dispatch(goToConfigurationScreen(alarmWithId));
-    // });
-    dispatch({
-      type: 'ADD_ALARM',
-      payload: alarm,
+    createAlarm(alarm).then((result) => {
+      const alarmWithId = { ...alarm, id: result.insertId };
+      dispatch({
+        type: 'ADD_ALARM',
+        payload: alarmWithId,
+      });
+      dispatch(goToConfigurationScreen(alarmWithId));
     });
-    dispatch(goToConfigurationScreen(alarm));
   };
 };
 
 const toggleAlarm = (alarm) => {
   return (dispatch) => {
     dispatch({ type: 'TOGGLE_ALARM', payload: alarm });
-    // updateAlarmSwitching({ id: alarm.id, isEnabled: !alarm.isEnabled });
+    updateAlarmSwitching({ id: alarm.id, isEnabled: !alarm.isEnabled });
   };
 };
 
@@ -48,7 +43,7 @@ const changeAlarmTime = (alarm, newTimeObj) => {
     console.log(newTime);
 
     dispatch({ type: 'CHANGE_ALARM_TIME', payload: { alarm, newTime } });
-    // updateAlarmTime({ id: alarm.id, time: newTime });
+    updateAlarmTime({ id: alarm.id, time: newTime });
   };
 };
 
@@ -57,7 +52,7 @@ const toggleRepeat = (alarm) => {
     const newRepeat = alarm.repeat ? '' : '1000000';
 
     dispatch({ type: 'TOGGLE_ALARM_REPEAT', payload: { alarm, newRepeat } });
-    // updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
+    updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
   };
 };
 
@@ -76,7 +71,7 @@ const toggleRepeatDay = (alarm, dayIndex) => {
     newRepeat = newRepeat.join('');
 
     dispatch({ type: 'TOGGLE_REPEAT_DAY', payload: { alarm, newRepeat } });
-    // updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
+    updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
   };
 };
 

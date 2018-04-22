@@ -2,7 +2,7 @@
 // Data types https://www.sqlite.org/datatype3.html
 // Example https://github.com/expo/sqlite-example/blob/master/App.js
 
-import { SQLite } from 'expo';
+const SQLite = require('react-native-sqlite-storage')
 
 const db = SQLite.openDatabase('db.db');
 
@@ -64,7 +64,7 @@ function deleteAlarm({ id }) {
 function getAlarms() {
     return makeDBCall('select * from alarms')
         .then(({ rows }) => {
-            return rows._array.map(alarm => Object.assign(
+            return rows.raw().map(alarm => Object.assign(
                 {},
                 alarm,
                 {
@@ -85,64 +85,14 @@ export {
 };
 
 // TODO: remove fake data population
+const prepopulatedAlarmsCount = 40;
 
-[
-    {
-        time: 31800000,
-        repeat: '',
-        isEnabled: false,
-    }, {
-        time: 32000000,
-        repeat: '1111100',
-        isEnabled: true,
-    }, {
-        time: 33000000,
-        repeat: '0000011',
-        isEnabled: true,
-    }, {
-        time: 34000000,
-        repeat: '0110010',
-        isEnabled: false,
-    }, {
-        time: 35000000,
-        repeat: '',
-        isEnabled: true,
-    }, {
-        time: 36000000,
-        repeat: '0110001',
-        isEnabled: true,
-    },
-    {
-      time: 31800000,
-      repeat: '',
-      isEnabled: false,
-    }, {
-        time: 32000000,
-        repeat: '1111100',
-        isEnabled: true,
-    }, {
-        time: 33000000,
-        repeat: '0000011',
-        isEnabled: true,
-    }, {
-        time: 34000000,
-        repeat: '0110010',
-        isEnabled: false,
-    }, {
-        time: 35000000,
-        repeat: '',
-        isEnabled: true,
-    }, {
-        time: 36000000,
-        repeat: '0110001',
-        isEnabled: true,
-    }, {
-        time: 35000000,
-        repeat: '',
-        isEnabled: true,
-    }, {
-        time: 36000000,
-        repeat: '0110001',
-        isEnabled: true,
-    }
-].forEach(createAlarm);
+for (let i = 0; i < prepopulatedAlarmsCount; i++) {
+    const alarm = {
+        time: Math.round(Math.random() * 1440) * 60000,
+        repeat: ('0000000').split('').map(() => +(Math.random() > 0.5)).join(''),
+        isEnabled: +(Math.random() > 0.5),
+    };
+
+    createAlarm(alarm);
+};
