@@ -77,7 +77,7 @@ class SearchScreen extends React.Component {
             q: query,
             maxResults: 25,
             part: 'snippet',
-            key: YOU_TUBE_API_KEY,
+            key: YOUTUBE_API_KEY,
         };
 
         var query = Object.keys(queryParams)
