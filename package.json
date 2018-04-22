@@ -19,6 +19,7 @@
     "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-native": "0.52.0",
+    "react-native-app-launcher": "git+https://github.com/MrToph/react-native-app-launcher.git",
     "react-native-check-box": "^2.1.0",
     "react-native-sqlite-storage": "^3.3.4",
     "react-navigation": "^1.5.8",

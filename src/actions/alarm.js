@@ -1,4 +1,5 @@
 import { NavigationActions } from 'react-navigation';
+import AppLauncher from 'react-native-app-launcher';
 
 import {
   updateAlarmSwitching,
@@ -29,7 +30,22 @@ const createNewAlarm = () => {
 
 const toggleAlarm = (alarm) => {
   return (dispatch) => {
-    dispatch({ type: 'TOGGLE_ALARM', payload: alarm });
+    dispatch({
+      type: 'TOGGLE_ALARM',
+      payload: { ...alarm, isEnabled: !alarm.isEnabled }
+    });
+
+    const timestamp = new Date();
+    const alramTime = new Date(alarm.time);
+    timestamp.setHours(alramTime.getHours());
+    timestamp.setMinutes(alramTime.getMinutes());
+    timestamp.setSeconds(0);
+
+    if (!alarm.isEnabled) {
+      AppLauncher.setAlarm(alarm.id, timestamp.getTime());
+    } else {
+      AppLauncher.clearAlarm(alarm.id);
+    }
     updateAlarmSwitching({ id: alarm.id, isEnabled: !alarm.isEnabled });
   };
 };
@@ -40,7 +56,6 @@ const changeAlarmTime = (alarm, newTimeObj) => {
     newTime.setHours(newTimeObj.hours);
     newTime.setMinutes(newTimeObj.minutes);
     newTime = newTime.getTime();
-    console.log(newTime);
 
     dispatch({ type: 'CHANGE_ALARM_TIME', payload: { alarm, newTime } });
     updateAlarmTime({ id: alarm.id, time: newTime });
