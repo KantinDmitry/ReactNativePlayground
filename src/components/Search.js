@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, TextInput, StyleSheet, Image, FlatList, Text } from 'react-native';
-import { YOU_TUBE_API_KEY } from '../secrets'
+import { YOUTUBE_API_KEY } from '../secrets'
 
 const styles = StyleSheet.create({
     queryInput: {
