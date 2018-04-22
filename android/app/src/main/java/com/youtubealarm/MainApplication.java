@@ -27,7 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new LauncherPackage(),     // add this for react-native-app-launcher
-          new SQLitePluginPackage(),   // register SQLite Plugin here
+          new SQLitePluginPackage()
       );
     }
 
