@@ -76,13 +76,8 @@ const toggleRepeat = (alarm) => {
     dispatch({ type: 'TOGGLE_ALARM_REPEAT', payload: { alarm, newRepeat } });
 
     if (alarm.isEnabled) {
-      if (newRepeat) {
-        clearAlarm(alarm.id, alarm.repeat); // clear old repeat
-        setAlarm(alarm.id, newRepeat, alarm.time);
-      } else {
-        clearAlarm(alarm.id, alarm.repeat); // clear old repeat
-        setAlarm(alarm.id, newRepeat, alarm.time); // set new alarm (no repeat)
-      }
+      clearAlarm(alarm.id, alarm.repeat); // clear old repeat
+      setAlarm(alarm.id, newRepeat, alarm.time);
     }
 
     updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
