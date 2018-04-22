@@ -85,7 +85,7 @@ export {
 };
 
 // TODO: remove fake data population
-const prepopulatedAlarmsCount = 40;
+const prepopulatedAlarmsCount = 4;
 
 for (let i = 0; i < prepopulatedAlarmsCount; i++) {
     const alarm = {

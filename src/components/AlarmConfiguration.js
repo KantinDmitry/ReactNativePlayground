@@ -106,6 +106,7 @@ class AlarmConfiguration extends Component {
 
   render() {
     const { alarm } = this.props;
+    const alarmTime = new Date(alarm.time);
     const timeHHMM = msToHHMM(alarm.time);
 
     return (
