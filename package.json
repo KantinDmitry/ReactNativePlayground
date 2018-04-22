@@ -21,6 +21,7 @@
     "react-native": "0.52.0",
     "react-native-app-launcher": "git+https://github.com/MrToph/react-native-app-launcher.git",
     "react-native-check-box": "^2.1.0",
+    "react-native-sqlite-storage": "^3.3.4",
     "react-navigation": "^1.5.8",
     "react-navigation-redux-helpers": "^1.0.3",
     "react-redux": "^5.0.7",
