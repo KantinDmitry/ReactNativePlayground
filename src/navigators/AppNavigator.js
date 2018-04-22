@@ -9,6 +9,7 @@ import MainScreen from '../components/MainScreen';
 import Player from '../components/Player';
 import Alarms from '../components/Alarms';
 import Search from '../components/Search';
+import Playlists from '../components/Playlists';
 import AlarmConfiguration from '../components/AlarmConfiguration';
 
 export const AppNavigator = StackNavigator({
@@ -16,7 +17,8 @@ export const AppNavigator = StackNavigator({
   Player: { screen: Player },
   Alarms: { screen: Alarms },
   Search: { screen: Search },
-  AlarmConfiguration: { screen: AlarmConfiguration }
+  Playlists: { screen: Playlists },
+  AlarmConfiguration: { screen: AlarmConfiguration },
 });
 
 class AppWithNavigationState extends React.Component {
