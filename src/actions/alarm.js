@@ -35,6 +35,23 @@ const createNewAlarm = () => {
   };
 };
 
+const ringAlarm = (alarmId) => {
+    return (dispatch) => {
+        dispatch(goToPlayerScreen());
+    };
+};
+
+const goToPlayerScreen = () => {
+    return (dispatch) => {
+        const goToScreenAction = NavigationActions.navigate({
+            routeName: 'Player',
+            params: {},
+        });
+
+        dispatch(goToScreenAction);
+    };
+};
+
 const toggleAlarm = (alarm) => {
   return (dispatch) => {
     dispatch({
@@ -135,7 +152,7 @@ const setAlarm = (id, repeat, time) => {
   fire.hours(hours);
   fire.minutes(minutes);
   fire.seconds(0);
-  
+
   if (repeat === '') {
     console.log('clearAlarm', id);
     AppLauncher.clearAlarm(id);
@@ -194,4 +211,5 @@ export {
   toggleRepeat,
   toggleRepeatDay,
   goToConfigurationScreen,
+  ringAlarm,
 };
