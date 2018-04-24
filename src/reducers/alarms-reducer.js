@@ -1,12 +1,9 @@
 const initialState = {
   alarms: [],
-  activeAlarmId: 0,
 };
 
 function alarmsReducer(state = initialState, action) {
   switch (action.type) {
-    case 'SET_ACTIVE_ALARM':
-      return { ...state, activeAlarmId: action.payload };
     case 'INIT_ALARMS':
       return { ...state, alarms: action.payload };
     case 'ADD_ALARM':
@@ -52,6 +49,15 @@ function alarmsReducer(state = initialState, action) {
       const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.id);
       const alarm = state.alarms[alarmIndex];
       const updatedAlarm = { ...alarm, isEnabled: !alarm.isEnabled };
+      const alarms = state.alarms.slice();
+      alarms[alarmIndex] = updatedAlarm;
+
+      return { ...state, alarms };
+    }
+    case 'SET_PLAYLIST_ID': {
+      const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.id);
+      const alarm = state.alarms[alarmIndex];
+      const updatedAlarm = { ...alarm, playlistId: action.payload.playlistId };
       const alarms = state.alarms.slice();
       alarms[alarmIndex] = updatedAlarm;
 

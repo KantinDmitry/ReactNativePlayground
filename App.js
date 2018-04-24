@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import AppReducer from './src/reducers';
 import AppWithNavigationState from './src/navigators/AppNavigator';
 import { middleware } from './src/utils/redux';
+import { getAlarms, getPlaylists } from './src/utils/database';
+import { ringAlarm } from './src/actions/alarm';
 
 const store = createStore(
   AppReducer,
@@ -23,7 +25,21 @@ class ReduxExampleApp extends React.Component {
     constructor(props) {
         super(props);
         console.log('App.js', props);
-        store.dispatch({ type: 'SET_ACTIVE_ALARM', payload: props.alarmID });
+
+        const initAlarms = getAlarms().then((alarms) => {
+            store.dispatch({ type: 'INIT_ALARMS', payload: alarms });
+        });
+
+        const initPlaylists = getPlaylists().then((playlists) => {
+            store.dispatch({ type: 'INIT_PLAYLISTS', payload: playlists });
+        });
+
+        Promise.all([initAlarms, initPlaylists])
+            .then(() => {
+                if (props.alarmID) {
+                    store.dispatch(ringAlarm(props.alarmID));
+                }
+            });
     }
 
     render() {

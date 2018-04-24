@@ -5,46 +5,47 @@
 const SQLite = require('react-native-sqlite-storage')
 
 const db = SQLite.openDatabase('db.db');
-const initTables = false;
+const dropTables = false;
 
-if (initTables) {
-    db.transaction((tx) => {
+db.transaction((tx) => {
+    if (dropTables) {
         tx.executeSql('drop table if exists alarms');
         tx.executeSql('drop table if exists playlists');
+    }
 
-        tx.executeSql(
-            `create table if not exists alarms(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                time INTEGER,
-                repeat TEXT,
-                isEnabled INTEGER
-            );`
-        );
+    tx.executeSql(
+        `create table if not exists alarms(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            time INTEGER,
+            repeat TEXT,
+            isEnabled INTEGER,
+            playlistId INTEGER
+        );`
+    );
 
-        tx.executeSql(
-            `create table if not exists playlists(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                videos TEXT
-            );`
-        );
-    });
-}
+    tx.executeSql(
+        `create table if not exists playlists(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            videos TEXT
+        );`
+    );
+});
 
 
 function makeDBCall(sql = '', args = []) {
     console.log('makeDBCall', sql, args);
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
-            tx.executeSql(sql, args, (_, result) => resolve(result), (_, err) => reject(err));
+            tx.executeSql(sql, args, (_, result) => resolve(result), (err) => reject(err));
         }, reject);
     });
 }
 
-function createAlarm({ time, isEnabled, repeat }) {
+function createAlarm({ time, isEnabled, repeat, playlistId }) {
     return makeDBCall(
-        'insert into alarms (time, repeat, isEnabled) values (?, ?, ?);',
-        [time, repeat, +isEnabled]
+        'insert into alarms (time, repeat, isEnabled, playlistId) values (?, ?, ?, ?);',
+        [time, repeat, +isEnabled, playlistId]
     );
 }
 
@@ -59,6 +60,13 @@ function updateAlarmSwitching({ id, isEnabled }) {
     return makeDBCall(
         'update alarms set isEnabled = ? where id = ?;',
         [+isEnabled, id]
+    );
+}
+
+function updateAlarmPlaylistId({ id, playlistId }) {
+    return makeDBCall(
+        'update alarms set playlistId = ? where id = ?;',
+        [playlistId, id]
     );
 }
 
@@ -175,4 +183,5 @@ export {
     deletePlaylist,
     addVideoToPlaylist,
     deleteVideoFromPlaylist,
+    updateAlarmPlaylistId,
 };

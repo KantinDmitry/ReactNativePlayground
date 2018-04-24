@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, WebView } from 'react-native';
 import YouTube from 'react-native-youtube'
 import { YOUTUBE_API_KEY } from '../secrets'
 import { connect } from 'react-redux';
+import { DEFAULT_PLAYLIST } from '../shared/constants'
 
 const styles = StyleSheet.create({
     Player: {
@@ -18,8 +19,8 @@ class Player extends React.Component {
     }
 
     render() {
-        const currentVideoIndex = this.state.currentVideoIndex % this.props.videos.length;
-        const videoId = this.props.videos[currentVideoIndex];
+        const currentVideoIndex = this.state.currentVideoIndex % this.state.videoIds.length;
+        const videoId = this.state.videoIds[currentVideoIndex];
 
         return (
             <View>
@@ -42,7 +43,23 @@ class Player extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({ currentVideoIndex: 0 });
+        const alarmId = this.props.navigation.state &&
+            this.props.navigation.state.params &&
+            this.props.navigation.state.params.alarmId;
+
+        const alarm = this.props.alarms.find(alarm => alarm.id === alarmId) || {};
+        const playlistId = alarm.playlistId || 0;
+        const playlist = this.props.playlists.find(playlist => playlist.id === playlistId) || {};
+        let videoIds = DEFAULT_PLAYLIST;
+
+        if (playlist.videos && playlist.videos.length > 0) {
+            videoIds = playlist.videos
+                .map(video => video.id)
+                .filter(Boolean);
+        }
+
+
+        this.setState({ currentVideoIndex: 0, videoIds });
     }
 }
 
@@ -52,7 +69,8 @@ Player.navigationOptions = {
 };
 
 const mapStateToProps = state => ({
-    videos: ['E86ujaO5GCM', 'FLCfCQQGAWU', 'lr5RskILpkg'],
+    playlists: state.playlistsData.playlists || [],
+    alarms: state.alarmsData.alarms,
 });
 
 const mapDispatchToProps = dispatch => ({

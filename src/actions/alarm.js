@@ -8,6 +8,7 @@ import {
   updateAlarmSwitching,
   updateAlarmRepeat,
   updateAlarmTime,
+  updateAlarmPlaylistId,
   createAlarm,
 } from '../utils/database';
 
@@ -18,6 +19,7 @@ const createNewAlarm = () => {
       time: -10800000,
       repeat: '',
       isEnabled: true,
+      playlistId: 0,
     };
 
     createAlarm(alarm).then((result) => {
@@ -37,15 +39,15 @@ const createNewAlarm = () => {
 
 const ringAlarm = (alarmId) => {
     return (dispatch) => {
-        dispatch(goToPlayerScreen());
+        dispatch(goToPlayerScreen(alarmId));
     };
 };
 
-const goToPlayerScreen = () => {
+const goToPlayerScreen = (alarmId) => {
     return (dispatch) => {
         const goToScreenAction = NavigationActions.navigate({
             routeName: 'Player',
-            params: {},
+            params: { alarmId },
         });
 
         dispatch(goToScreenAction);
@@ -98,6 +100,15 @@ const toggleRepeat = (alarm) => {
     }
 
     updateAlarmRepeat({ id: alarm.id, repeat: newRepeat });
+  };
+};
+
+const setPlaylistId = (alarm, playlistId) => {
+  return (dispatch) => {
+      updateAlarmPlaylistId({ id: alarm.id, playlistId })
+        .then(() => {
+            dispatch({ type: 'SET_PLAYLIST_ID', payload: { id: alarm.id, playlistId } });
+        });
   };
 };
 
@@ -211,5 +222,6 @@ export {
   toggleRepeat,
   toggleRepeatDay,
   goToConfigurationScreen,
+  setPlaylistId,
   ringAlarm,
 };
