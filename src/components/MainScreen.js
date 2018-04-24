@@ -34,22 +34,22 @@ class MainScreen extends React.Component {
                 <View style={styles.container}>
                     <TransitionButton
                         screenName='Alarms'
-                        title='Go to Alarms screen'
+                        title='Alarms list'
                     />
 
                     <TransitionButton
                         screenName='Playlists'
-                        title='Go to Playlists screen'
+                        title='My playlists'
                     />
 
                     <TransitionButton
                         screenName='Player'
-                        title='Go to Player screen'
+                        title='Open player'
                     />
 
                     <TransitionButton
                         screenName='Search'
-                        title='Go to Search screen'
+                        title='Search for videos'
                     />
                 </View>
             </View>
