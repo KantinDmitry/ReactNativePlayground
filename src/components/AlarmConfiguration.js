@@ -6,10 +6,11 @@ import {
   Text,
   View,
   Switch,
-  TimePickerAndroid,
   FlatList,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
+import DatePicker from 'react-native-datepicker'
+
 import {
   toggleAlarm,
   changeAlarmTime,
@@ -22,70 +23,55 @@ import { WEEK_DAYS } from '../shared/constants';
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    paddingRight: 10,
+    paddingLeft: 10,
   },
   header: {
     height: 70,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingLeft: 27,
-    paddingRight: 27,
+    paddingLeft: 17,
+    paddingRight: 17,
     paddingBottom: 5,
     borderBottomWidth: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  alarmTime: {
-    fontSize: 26,
+    borderColor: '#CCCCCC'
   },
   repeatList: {
     flex: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 10,
     paddingLeft: 30,
     paddingRight: 30,
   },
   activeWD: {
     paddingBottom: 4,
     borderBottomWidth: 3,
-    borderBottomColor: '#000000',
+    borderBottomColor: '#FF0000',
+    color: '#FF0000',
     textAlign: 'center',
   },
   inactiveWD: {
     paddingBottom: 4,
     borderBottomWidth: 3,
     borderBottomColor: '#00000000',
-    color: '#CCCCCC',
+    color: '#FF000044',
     textAlign: 'center',
   },
 });
 
 class AlarmConfiguration extends Component {
 
-  async openTimepicker(alarm, alarmTime) {
-    const hours = alarmTime.getHours();
-    const minutes = alarmTime.getMinutes();
-
-    try {
-      const {action, hour, minute} = await TimePickerAndroid.open({
-        hour: hours,
-        minute: minutes,
-        is24Hour: true,
-      });
-      if (action !== TimePickerAndroid.dismissedAction) {
-        this.props.changeAlarmTime(
-          alarm,
-          {
-            hours: hour,
-            minutes: minute,
-          }
-        );
+  onDateChange(date, alarm) {
+    this.props.changeAlarmTime(
+      alarm,
+      {
+        hours: +date.split(':')[0],
+        minutes: +date.split(':')[1],
       }
-    } catch ({code, message}) {
-      console.warn('Cannot open time picker', message);
-    }
+    );
   }
 
   renderWeekDay(weekDay, index, alarm) {
@@ -108,18 +94,46 @@ class AlarmConfiguration extends Component {
     const { alarm } = this.props;
     const alarmTime = new Date(alarm.time);
     const timeHHMM = msToHHMM(alarm.time);
+    const thumbTintColor = alarm.isEnabled ? "#FF0000" : "#F3F3F3";
 
     return (
       <View style={styles.root}>
         <View style={styles.header}>
-          <Text onPress={() => this.openTimepicker(alarm, alarmTime)} style={styles.alarmTime}>{timeHHMM}</Text>
+          <DatePicker
+            date={alarmTime}
+            mode="time"
+            androidMode="spinner"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                height: 0
+              },
+              dateInput: {
+                borderWidth: 0,
+              },
+              dateText: {
+                fontSize: 34,
+              },
+              btnTextCancel: {
+                fontSize: 20,
+                color: '#FF0000'
+              },
+              btnTextConfirm: {
+                color: '#FF0000'
+              }
+            }}
+            onDateChange={(date) => this.onDateChange(date, alarm)}
+          />
           <Switch
             value={alarm.isEnabled}
+            onTintColor="#FF000044"
+            thumbTintColor={thumbTintColor}
             onValueChange={() => this.props.toggleAlarm(alarm)}
           />
         </View>
         <CheckBox
-          style={{flex: 0, padding: 10, width: 130, paddingLeft: 30}}
+          style={{flex: 0, padding: 10, width: 130, paddingLeft: 30, marginTop: 10}}
           onClick={() => this.props.toggleRepeat(alarm)}
           isChecked={!!alarm.repeat}
           leftText={"Repeat"}
@@ -140,6 +154,11 @@ class AlarmConfiguration extends Component {
   }
 }
 
+AlarmConfiguration.navigationOptions = {
+  title: 'Alarm configuration',
+  headerTintColor: '#FF0000',
+};
+
 const mapStateToProps = (state, ownProps) => {
   const alarmId = ownProps.navigation.state.params.alarm.id;
   return {
@@ -156,10 +175,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 AlarmConfiguration.propTypes = {
   navigation: PropTypes.object.isRequired,
-};
-
-AlarmConfiguration.navigationOptions = {
-  title: 'Alarm configuration',
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmConfiguration);
