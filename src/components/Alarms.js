@@ -10,7 +10,7 @@ import {
   TouchableHighlight,
   Button,
 } from 'react-native';
-import { getAlarms, deleteAlarm } from '../utils/database';
+import { deleteAlarm } from '../utils/database';
 import {
   toggleAlarm,
   createNewAlarm,
@@ -127,10 +127,6 @@ class AlarmsScreen extends React.Component {
 
   onPressAlarm(alarm) {
     this.props.goToConfigurationScreen(alarm);
-  }
-
-  componentWillMount() {
-    getAlarms().then(this.props.initAlarms);
   }
 
   render() {

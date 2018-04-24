@@ -211,12 +211,6 @@ class PlaylistsScreen extends React.Component {
             </View>
         );
     }
-
-    componentWillMount() {
-        if (!this.props.isInitialised) {
-            getPlaylists().then(this.props.initPlaylists);
-        }
-    }
 }
 
 PlaylistsScreen.navigationOptions = {
@@ -233,7 +227,6 @@ const mapDispatchToProps = dispatch => ({
     deletePlaylist: (id) => {
         dispatch(deletePlaylist(id));
     },
-    initPlaylists: (playlists) => dispatch({ type: 'INIT_PLAYLISTS', payload: playlists }),
     createNewPlaylist: (name) => {
         dispatch(createNewPlaylist(name));
     }

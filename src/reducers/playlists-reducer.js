@@ -1,12 +1,11 @@
 const initialAuthState = {
     playlists: [],
-    isInitialised: false,
 };
 
 function playlistsReducer(state = initialAuthState, action) {
     switch (action.type) {
     case 'INIT_PLAYLISTS':
-        return { ...state, playlists: action.payload, isInitialised: true };
+        return { ...state, playlists: action.payload };
     case 'ADD_PLAYLIST': {
         const newPlaylist = { ...action.payload, videos: [] };
         return { ...state, playlists: state.playlists.concat(newPlaylist) };
