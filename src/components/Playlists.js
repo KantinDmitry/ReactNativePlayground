@@ -46,6 +46,12 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
     },
+    videoPreview: {
+      marginLeft: 10,
+      paddingLeft: 10,
+      borderLeftWidth: 1,
+      borderColor: '#CCCCCC',
+    },
     playlistFooter: {
       marginTop: 15,
       paddingRight: 15,
@@ -55,22 +61,29 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderColor: '#CCCCCC',
     },
+    modalRoot: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     modalContent: {
         flex: 0,
-        backgroundColor: 'white',
-        padding: 22,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 4,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
         width: 300,
         height: 300,
+        padding: 22,
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'white',
     },
-    videoPreview: {
-      marginLeft: 10,
-      paddingLeft: 10,
-      borderLeftWidth: 1,
-      borderColor: '#CCCCCC',
+    modalButtons: {
+      flex: 0,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: 220,
+      marginTop: 30,
     },
 });
 
@@ -155,28 +168,34 @@ class PlaylistsScreen extends React.Component {
             <View style={styles.root}>
                 <Modal
                     animationType="slide"
-                    transparent={true}
+                    transparent
                     visible={this.state.isModalVisible}
                     onRequestClose={() => this.closeModal()}
                 >
-                    <View style={styles.modalContent}>
-                        <Text>Enter playlist name</Text>
-                        <TextInput
-                            onChangeText={(newPlaylistName) => this.setState({ newPlaylistName })}
-                            value={this.state.newPlaylistName}
-                            style={{width: '80%'}}
-                        />
-
-                        <View style={{marginBottom: 10}}>
-                            <Button
-                                onPress={() => this.submitPlaylistName()}
-                                title="Ok"
+                    <View style={styles.modalRoot}>
+                        <View style={styles.modalContent}>
+                            <Text>Enter playlist name</Text>
+                            <TextInput
+                                onChangeText={(newPlaylistName) => this.setState({ newPlaylistName })}
+                                value={this.state.newPlaylistName}
+                                style={{width: '80%'}}
+                                underlineColorAndroid="#FF0000"
+                                selectionColor="#FF0000"
                             />
+
+                            <View style={styles.modalButtons}>
+                                <Button
+                                    color="#FF0000"
+                                    onPress={() => this.submitPlaylistName()}
+                                    title="Create"
+                                />
+                                <Button
+                                    color="#FF0000"
+                                    onPress={() => this.closeModal()}
+                                    title="Cancel"
+                                />
+                            </View>
                         </View>
-                        <Button
-                            onPress={() => this.closeModal()}
-                            title="Cancel"
-                        />
                     </View>
                 </Modal>
 
