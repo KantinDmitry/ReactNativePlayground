@@ -20,18 +20,19 @@ class ReduxExampleApp extends React.Component {
     alarmID: PropTypes.string,
   }
 
-  constructor(props) {
-    super(props);
-    console.log('App.js', props);
-  }
+    constructor(props) {
+        super(props);
+        console.log('App.js', props);
+        store.dispatch({ type: 'SET_ACTIVE_ALARM', payload: props.alarmID });
+    }
 
-  render() {
-    return (
-      <Provider store={store}>
-        <AppWithNavigationState />
-      </Provider>
-    );
-  }
+    render() {
+        return (
+            <Provider store={store}>
+                <AppWithNavigationState />
+            </Provider>
+        );
+    }
 }
 
 export default ReduxExampleApp;

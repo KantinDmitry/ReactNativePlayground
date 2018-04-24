@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-
+import { connect } from 'react-redux';
 import TransitionButton from './TransitionButton';
+import { ringAlarm } from '../actions/alarm';
 
 const styles = StyleSheet.create({
   root: {
@@ -19,35 +20,58 @@ const styles = StyleSheet.create({
   },
 });
 
-const MainScreen = () => (
-  <View style={styles.root}>
-    <View style={styles.container}>
-      <TransitionButton
-          screenName='Alarms'
-          title='Go to Alarms screen'
-      />
+class MainScreen extends React.Component {
+    static get navigationOptions() {
+        return {
+            title: 'YouTube Alarm',
+            headerTintColor: '#FF0000',
+        }
+    }
 
-      <TransitionButton
-          screenName='Playlists'
-          title='Go to Playlists screen'
-      />
+    render() {
+        return (
+            <View style={styles.root}>
+                <View style={styles.container}>
+                    <TransitionButton
+                        screenName='Alarms'
+                        title='Alarms list'
+                    />
 
-      <TransitionButton
-          screenName='Player'
-          title='Go to Player screen'
-      />
+                    <TransitionButton
+                        screenName='Playlists'
+                        title='My playlists'
+                    />
 
-      <TransitionButton
-          screenName='Search'
-          title='Go to Search screen'
-      />
-    </View>
-  </View>
-);
+                    <TransitionButton
+                        screenName='Player'
+                        title='Open player'
+                    />
 
-MainScreen.navigationOptions = {
-  title: 'YouTube Alarm',
-  headerTintColor: '#FF0000',
-};
+                    <TransitionButton
+                        screenName='Search'
+                        title='Search for videos'
+                    />
+                </View>
+            </View>
+        )
+    }
 
-export default MainScreen;
+    componentDidMount() {
+        const { activeAlarmId } = this.props;
+
+        if (activeAlarmId) {
+            this.props.ringAlarm(activeAlarmId);
+        }
+    }
+}
+
+
+const mapStateToProps = state => ({
+    activeAlarmId: state.alarmsData.activeAlarmId,
+});
+
+const mapDispatchToProps = dispatch => ({
+    ringAlarm: alarmId => dispatch(ringAlarm(alarmId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
