@@ -17,33 +17,43 @@ import { getPlaylists } from '../utils/database';
 import AddButton from './AddButton';
 
 const styles = StyleSheet.create({
-    playlistContainer: {
-        height: 120,
-        backgroundColor: '#CCCCCC',
-        borderBottomWidth: 2,
+    root: {
         flex: 1,
-        flexDirection: 'column',
-    },
-    playlistHead: {
-        height: 35,
-        flex: 0,
-        backgroundColor: '#BBBBBB',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        paddingTop: 8,
     },
     list: {
+    },
+    playlistContainer: {
         flex: 1,
-        flexDirection: 'column'
+    },
+    playlistHead: {
+        flex: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 15,
+        paddingLeft: 15,
+        paddingTop: 20,
+        paddingBottom: 20,
+    },
+    playlistName: {
+      maxWidth: 250,
+      fontSize: 18,
+      lineHeight: 20,
+      color: '#444444',
     },
     videosList: {
         flex: 1,
         flexDirection: 'row',
     },
-    root: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
+    playlistFooter: {
+      marginTop: 15,
+      paddingRight: 15,
+      paddingLeft: 15,
+    },
+    delimeter: {
+      borderBottomWidth: 1,
+      borderColor: '#CCCCCC',
     },
     modalContent: {
         flex: 0,
@@ -55,6 +65,12 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0, 0, 0, 0.1)',
         width: 300,
         height: 300,
+    },
+    videoPreview: {
+      marginLeft: 10,
+      paddingLeft: 10,
+      borderLeftWidth: 1,
+      borderColor: '#CCCCCC',
     },
 });
 
@@ -71,29 +87,36 @@ class PlaylistsScreen extends React.Component {
     renderItem({ item, index }) {
         return (
             <View style={styles.playlistContainer} key={index}>
-                <TouchableHighlight onLongPress={() => this.onLongPressPlaylists(item)} underlayColor="white">
-                <View style={styles.playlistHead}>
-                    <Text>{item.name}</Text>
-                    <Text>{`${item.videos.length} videos`}</Text>
-                </View>
+                <TouchableHighlight onLongPress={() => this.onLongPressPlaylists(item)} underlayColor="#FF000044">
+                    <View style={styles.playlistHead}>
+                        <Text
+                          numberOfLines={1}
+                          style={styles.playlistName}>{item.name}</Text>
+                        <Text>{`${item.videos.length} videos`}</Text>
+                    </View>
                 </TouchableHighlight>
                 <FlatList
                     style={styles.videosList}
                     data={item.videos}
                     renderItem={this.renderVideoImage.bind(this)}
                     keyExtractor={(item, imageIndex) => `videoImage${index}-${imageIndex}`}
-                    horizontal={true}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
                 />
+                <View style={styles.playlistFooter}>
+                  <View style={styles.delimeter}></View>
+                </View>
             </View>
         );
     }
 
     renderVideoImage({ item, index }) {
+        const style = index !== 0 ? styles.videoPreview : {};
+
         return (
-            <Image
-                style={{ height: 85, width: 90 }}
-                source={{ uri: item.thumbnailURL }}
-            />
+          <View style={style}>
+            <Image style={{height: 95, width: 120}} source={{ uri: item.thumbnailURL }} />
+          </View>
         );
     }
 
@@ -176,6 +199,11 @@ class PlaylistsScreen extends React.Component {
         }
     }
 }
+
+PlaylistsScreen.navigationOptions = {
+  title: 'Playlists',
+  headerTintColor: '#FF0000',
+};
 
 const mapStateToProps = state => ({
     playlists: state.playlistsData.playlists,
