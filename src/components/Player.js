@@ -11,7 +11,6 @@ export default class Player extends React.Component {
   render() {
     return (
       <View style={{ height: 300 }}>
-        <Text>Player</Text>
         <WebView
             style={ styles.WebViewContainer }
             javaScriptEnabled={true}
@@ -22,3 +21,8 @@ export default class Player extends React.Component {
     );
   }
 }
+
+Player.navigationOptions = {
+  title: 'Player',
+  headerTintColor: '#FF0000',
+};
