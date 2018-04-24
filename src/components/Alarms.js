@@ -23,24 +23,36 @@ import AddButton from './AddButton';
 const styles = StyleSheet.create({
     root: {
       flex: 1,
-    },
-    alarmContainer: {
-        height: 50,
-        backgroundColor: '#F5F5F5',
-        borderBottomWidth: 2,
-        borderEndColor: '#FFFFFF',
-        borderStartColor: '#000000',
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+      padding: 8,
+      paddingBottom: 0,
     },
     alarmsList: {
         flex: 1,
+    },
+    alarmContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 3,
+        paddingTop: 5,
+        paddingBottom: 5,
+        height: 50,
+        borderBottomWidth: 1,
+        borderColor: '#606060',
+    },
+    alarmTime: {
+      paddingTop: 1,
+      paddingRight: 7,
+      paddingLeft: 4,
+      borderRightWidth: 1,
+      borderColor: '#CCCCCC',
+      fontSize: 24,
     },
     daysList: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'center',
+      paddingTop: 8,
     },
     activeWD: {
       paddingLeft: 3,
@@ -48,6 +60,12 @@ const styles = StyleSheet.create({
     inactiveWD: {
       paddingLeft: 3,
       color: '#CCCCCC'
+    },
+    switch: {
+      flex: 0,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: 70,
     },
 });
 
@@ -63,6 +81,7 @@ class AlarmsScreen extends React.Component {
 
     renderItem({ item, index }) {
         const timeHHMM = msToHHMM(item.time);
+        const thumbTintColor = item.isEnabled ? "#FF0000" : "#F3F3F3";
 
         return (
             <TouchableHighlight
@@ -70,7 +89,7 @@ class AlarmsScreen extends React.Component {
               underlayColor="#999999"
               onPress={() => this.onPressAlarm(item)} >
                 <View style={styles.alarmContainer} key={index} >
-                    <Text>{timeHHMM}</Text>
+                    <Text style={styles.alarmTime}>{timeHHMM}</Text>
                     {
                       !!item.repeat && (
                         <View style={styles.daysList}>
@@ -82,10 +101,14 @@ class AlarmsScreen extends React.Component {
                         </View>
                       )
                     }
-                    <Switch
-                        value={item.isEnabled}
-                        onValueChange={() => this.props.toggleAlarm(item)}
-                    />
+                    <View style={styles.switch}>
+                      <Switch
+                          value={item.isEnabled}
+                          onTintColor="#FF000044"
+                          thumbTintColor={thumbTintColor}
+                          onValueChange={() => this.props.toggleAlarm(item)}
+                      />
+                    </View>
                 </View>
             </TouchableHighlight>
         );
@@ -118,6 +141,7 @@ class AlarmsScreen extends React.Component {
             data={this.props.alarms}
             renderItem={this.renderItem.bind(this)}
             keyExtractor={(item, index) => 'alarmListItem' + index}
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}
         />
         <AddButton
@@ -127,6 +151,11 @@ class AlarmsScreen extends React.Component {
     );
   }
 }
+
+AlarmsScreen.navigationOptions = {
+  title: 'Alarms',
+  headerTintColor: '#FF0000',
+};
 
 const mapStateToProps = state => ({
     alarms: state.alarmsData.alarms,

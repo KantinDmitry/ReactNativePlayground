@@ -15,32 +15,54 @@ import { addVideoToPlaylist } from '../actions/playlists';
 import { YOUTUBE_API_KEY } from '../secrets'
 
 const styles = StyleSheet.create({
+    root: {
+      flex: 1,
+    },
     queryInput: {
-        height: 50,
-        borderColor: 'gray',
-        borderWidth: 1,
+        height: 60,
         paddingLeft: 15,
         paddingRight: 15,
-        marginBottom: 8,
     },
     resultsList: {
-        height: 600,
+        flex: 1,
+        paddingRight: 15,
+        paddingLeft: 15,
+        backgroundColor: '#F2F2F2',
     },
     searchResultContainer: {
-        height: 50,
-        borderBottomWidth: 2,
-        marginBottom: 3,
         flex: 1,
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 10,
+        paddingRight: 4,
+        paddingLeft: 4,
+        paddingBottom: 10,
+        height: 80,
+        borderBottomWidth: 1,
+        borderColor: '#CCCCCC',
     },
     videoNameText: {
-        width: '55%'
+        width: '50%'
     },
     playlistPicker: {
         height: 40,
-        width: '10%',
-        backgroundColor: '#333',
-        color: '#333',
+        width: 40,
+        color: '#333333',
+        backgroundColor: '#CCCCCCCC'
+    },
+    pickerText: {
+      position: 'absolute',
+      top: 15,
+      right: 4,
+      paddingTop: 6,
+      paddingLeft: 4,
+      height: 40,
+      width: 40,
+      borderRadius: 3,
+      backgroundColor: '#FF0000',
+      color: '#FFFFFF',
+      fontSize: 18,
     },
 });
 
@@ -52,7 +74,7 @@ class SearchScreen extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.root}>
                 <TextInput
                     style={styles.queryInput}
                     onChangeText={(text) => {
@@ -62,12 +84,16 @@ class SearchScreen extends React.Component {
                     placeholder='Type your search query'
                     value={this.state.text}
                     returnKeyType='search'
+                    underlineColorAndroid="#FF0000"
+                    selectionColor="#FF0000"
                 />
                 <FlatList
                     style={styles.resultsList}
                     data={this.props.searchRresults}
                     renderItem={this.renderResultItem.bind(this)}
                     keyExtractor={(item, index) => 'searchResultsListItem' + index}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{paddingBottom: 30}}
                 />
             </View>
         );
@@ -77,24 +103,27 @@ class SearchScreen extends React.Component {
         return (
             <View style={styles.searchResultContainer} key={index} >
                 <Image
-                    style={{ height: '100%', width: '30%', marginRight: 4 }}
+                    style={{ height: '100%', width: '30%'}}
                     source={{ uri: item.thumbnailURL }}
                 />
-                <View style={styles.videoNameText}>
-                    <Text>{item.title}</Text>
-                </View>
+                <Text numberOfLines={4} style={styles.videoNameText}>
+                  {item.title}
+                </Text>
                 <Picker
                     style={styles.playlistPicker}
                     onValueChange={(playlistId) => this.addInPlaylist(playlistId, item)}>
-                    <Picker.Item label="Add in the playlist" value="" />
-                    {this.props.playlists.map(
+                    <Picker.Item label="Add to the playlist:" value="" color="#FF0000" />
+                    {
+                      this.props.playlists.map(
                         (playlist, index) => (<Picker.Item
                             label={`${playlist.name}`}
                             value={playlist.id}
                             key={index}
                         />)
-                    )}
+                      )
+                    }
                 </Picker>
+                <Text style={styles.pickerText}>Add</Text>
             </View>
         );
     }
@@ -130,6 +159,11 @@ class SearchScreen extends React.Component {
             .catch(e => console.error('Search: failed to fetch results', e));
     }
 }
+
+SearchScreen.navigationOptions = {
+  title: 'Search',
+  headerTintColor: '#FF0000',
+};
 
 function formatResult(result) {
     return result.items.map((item) => {

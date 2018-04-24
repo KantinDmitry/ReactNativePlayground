@@ -19,6 +19,8 @@ export const AppNavigator = StackNavigator({
   Search: { screen: Search },
   Playlists: { screen: Playlists },
   AlarmConfiguration: { screen: AlarmConfiguration },
+}, {
+  cardStyle: { backgroundColor: '#FAFAFA' },
 });
 
 class AppWithNavigationState extends React.Component {
