@@ -19,7 +19,7 @@ db.transaction((tx) => {
             time INTEGER,
             repeat TEXT,
             isEnabled INTEGER,
-            playlistId INTEGER,
+            playlistId INTEGER
         );`
     );
 
@@ -37,15 +37,15 @@ function makeDBCall(sql = '', args = []) {
     console.log('makeDBCall', sql, args);
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
-            tx.executeSql(sql, args, (_, result) => resolve(result), (_, err) => reject(err));
+            tx.executeSql(sql, args, (_, result) => resolve(result), (err) => reject(err));
         }, reject);
     });
 }
 
-function createAlarm({ time, isEnabled, repeat }) {
+function createAlarm({ time, isEnabled, repeat, playlistId }) {
     return makeDBCall(
-        'insert into alarms (time, repeat, isEnabled) values (?, ?, ?);',
-        [time, repeat, +isEnabled]
+        'insert into alarms (time, repeat, isEnabled, playlistId) values (?, ?, ?, ?);',
+        [time, repeat, +isEnabled, playlistId]
     );
 }
 
@@ -60,6 +60,13 @@ function updateAlarmSwitching({ id, isEnabled }) {
     return makeDBCall(
         'update alarms set isEnabled = ? where id = ?;',
         [+isEnabled, id]
+    );
+}
+
+function updateAlarmPlaylistId({ id, playlistId }) {
+    return makeDBCall(
+        'update alarms set playlistId = ? where id = ?;',
+        [playlistId, id]
     );
 }
 
@@ -176,4 +183,5 @@ export {
     deletePlaylist,
     addVideoToPlaylist,
     deleteVideoFromPlaylist,
+    updateAlarmPlaylistId,
 };

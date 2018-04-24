@@ -17,6 +17,7 @@ import {
   changeAlarmTime,
   toggleRepeat,
   toggleRepeatDay,
+  setPlaylistId,
 } from '../actions/alarm';
 import { msToHHMM } from '../shared/helpers/date-time';
 import { WEEK_DAYS } from '../shared/constants';
@@ -95,8 +96,8 @@ class AlarmConfiguration extends Component {
     );
   }
 
-  addInPlaylist() {
-      console.log('addInPlaylist', ...args);
+  moveInPlaylist(alarm, playlistId) {
+      this.props.setPlaylistId(alarm, playlistId);
   }
 
   render() {
@@ -162,7 +163,8 @@ class AlarmConfiguration extends Component {
               <View><Text style={{ paddingLeft: 10 }}>Playlist</Text></View>
               <Picker
                   style={styles.playlistPicker}
-                  onValueChange={(playlistId) => this.addInPlaylist(playlistId, item)}
+                  onValueChange={(playlistId) => this.moveInPlaylist(alarm, playlistId)}
+                  selectedValue={alarm.playlistId}
                   prompt={'Playlist'}
                   >
                   {
@@ -201,6 +203,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeAlarmTime: (alarm, newTime) => dispatch(changeAlarmTime(alarm, newTime)),
   toggleRepeat: (alarm) => dispatch(toggleRepeat(alarm)),
   toggleRepeatDay: (alarm, dayIndex) => dispatch(toggleRepeatDay(alarm, dayIndex)),
+  setPlaylistId: (alarm, playlistId) => dispatch(setPlaylistId(alarm, playlistId)),
 });
 
 AlarmConfiguration.propTypes = {

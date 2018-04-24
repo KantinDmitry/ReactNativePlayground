@@ -57,6 +57,15 @@ function alarmsReducer(state = initialState, action) {
 
       return { ...state, alarms };
     }
+    case 'SET_PLAYLIST_ID': {
+      const alarmIndex = state.alarms.findIndex(alarm => alarm.id === action.payload.id);
+      const alarm = state.alarms[alarmIndex];
+      const updatedAlarm = { ...alarm, playlistId: action.payload.playlistId };
+      const alarms = state.alarms.slice();
+      alarms[alarmIndex] = updatedAlarm;
+
+      return { ...state, alarms };
+    }
     default:
       return state;
   }
