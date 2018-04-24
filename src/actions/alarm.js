@@ -39,15 +39,15 @@ const createNewAlarm = () => {
 
 const ringAlarm = (alarmId) => {
     return (dispatch) => {
-        dispatch(goToPlayerScreen());
+        dispatch(goToPlayerScreen(alarmId));
     };
 };
 
-const goToPlayerScreen = () => {
+const goToPlayerScreen = (alarmId) => {
     return (dispatch) => {
         const goToScreenAction = NavigationActions.navigate({
             routeName: 'Player',
-            params: {},
+            params: { alarmId },
         });
 
         dispatch(goToScreenAction);

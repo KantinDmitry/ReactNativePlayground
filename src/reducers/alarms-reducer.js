@@ -1,12 +1,9 @@
 const initialState = {
   alarms: [],
-  activeAlarmId: 0,
 };
 
 function alarmsReducer(state = initialState, action) {
   switch (action.type) {
-    case 'SET_ACTIVE_ALARM':
-      return { ...state, activeAlarmId: action.payload };
     case 'INIT_ALARMS':
       return { ...state, alarms: action.payload };
     case 'ADD_ALARM':

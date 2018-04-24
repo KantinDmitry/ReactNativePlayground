@@ -55,23 +55,6 @@ class MainScreen extends React.Component {
             </View>
         )
     }
-
-    componentDidMount() {
-        const { activeAlarmId } = this.props;
-
-        if (activeAlarmId) {
-            this.props.ringAlarm(activeAlarmId);
-        }
-    }
 }
 
-
-const mapStateToProps = state => ({
-    activeAlarmId: state.alarmsData.activeAlarmId,
-});
-
-const mapDispatchToProps = dispatch => ({
-    ringAlarm: alarmId => dispatch(ringAlarm(alarmId)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
+export default MainScreen;
