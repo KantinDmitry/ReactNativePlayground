@@ -102,9 +102,9 @@ class PlaylistsScreen extends React.Component {
             <View style={styles.playlistContainer} key={index}>
                 <TouchableHighlight onLongPress={() => this.onLongPressPlaylists(item)} underlayColor="#FF000044">
                     <View style={styles.playlistHead}>
-                        <Text
-                          numberOfLines={1}
-                          style={styles.playlistName}>{item.name}</Text>
+                        <Text numberOfLines={1} style={styles.playlistName}>
+                          {item.name}
+                        </Text>
                         <Text>{`${item.videos.length} videos`}</Text>
                     </View>
                 </TouchableHighlight>
