@@ -7,6 +7,7 @@ import {
   View,
   Switch,
   FlatList,
+  Picker,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import DatePicker from 'react-native-datepicker'
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 10,
+    marginBottom: 20,
     paddingLeft: 30,
     paddingRight: 30,
   },
@@ -59,6 +61,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#00000000',
     color: '#FF000044',
     textAlign: 'center',
+  },
+  playlistPicker: {
+      color: '#333333',
   },
 });
 
@@ -88,6 +93,10 @@ class AlarmConfiguration extends Component {
       }
       </Text>
     );
+  }
+
+  addInPlaylist() {
+      console.log('addInPlaylist', ...args);
   }
 
   render() {
@@ -149,6 +158,26 @@ class AlarmConfiguration extends Component {
             </View>
           )
         }
+          <View>
+              <View><Text style={{ paddingLeft: 10 }}>Playlist</Text></View>
+              <Picker
+                  style={styles.playlistPicker}
+                  onValueChange={(playlistId) => this.addInPlaylist(playlistId, item)}
+                  prompt={'Playlist'}
+                  >
+                  {
+                    this.props.playlists.map(
+                      (playlist, index) => (
+                          <Picker.Item
+                              label={`${playlist.name}`}
+                              value={playlist.id}
+                              key={index}
+                           />
+                      )
+                    )
+                  }
+              </Picker>
+          </View>
       </View>
     );
   }
@@ -163,6 +192,7 @@ const mapStateToProps = (state, ownProps) => {
   const alarmId = ownProps.navigation.state.params.alarm.id;
   return {
     alarm: state.alarmsData.alarms.find((alarm) => alarm.id === alarmId),
+    playlists: state.playlistsData.playlists,
   };
 };
 

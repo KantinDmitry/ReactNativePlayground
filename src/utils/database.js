@@ -18,7 +18,8 @@ db.transaction((tx) => {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             time INTEGER,
             repeat TEXT,
-            isEnabled INTEGER
+            isEnabled INTEGER,
+            playlistId INTEGER,
         );`
     );
 
