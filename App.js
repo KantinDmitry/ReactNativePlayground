@@ -37,7 +37,7 @@ class ReduxExampleApp extends React.Component {
         Promise.all([initAlarms, initPlaylists])
             .then(() => {
                 if (props.alarmID) {
-                    store.dispatch(ringAlarm(props.alarmID));
+                    store.dispatch(ringAlarm(parseInt(props.alarmID)));
                 }
             });
     }
