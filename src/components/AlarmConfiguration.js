@@ -167,6 +167,7 @@ class AlarmConfiguration extends Component {
                   selectedValue={alarm.playlistId}
                   prompt={'Playlist'}
                   >
+                  <Picker.Item label="Default" value={0}/>
                   {
                     this.props.playlists.map(
                       (playlist, index) => (
